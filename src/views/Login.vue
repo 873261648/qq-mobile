@@ -12,6 +12,7 @@
         <button :class="{'login-btn':true,'ready':qq&&password}">
             <span class="icon-right"></span>
         </button>
+        <div>注册</div>
     </div>
 </template>
 
