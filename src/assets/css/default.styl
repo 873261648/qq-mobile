@@ -1,0 +1,77 @@
+html {
+    font-size: 125%;
+}
+
+body {
+    font-family: Microsoft Yahei, Arial, Helvetica, sans-serif !important;
+    color: #333;
+    line-height: 2em;
+    font-size: 14px;
+}
+
+a {
+    text-decoration: none;
+}
+
+body, div, ul, ol, li, form, p, input, fieldset, h1, h2, h3, h4, h5, h6, dl, dt, dd, button {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box
+}
+
+fieldset, img {
+    border: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    vertical-align: bottom;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.suojin {
+    text-indent: 2em;
+}
+
+
+.text_center {
+    text-align: center;
+}
+
+.text_right {
+    text-align: right;
+
+}
+
+
+.clearfloat {
+    zoom: 1
+
+    &:after {
+        display: block;
+        clear: both;
+        content: "";
+        visibility: hidden;
+        height: 0
+    }
+}
+
+button
+input
+select
+textarea {
+    &:focus {
+        outline: none
+    }
+}
