@@ -10,7 +10,7 @@
             <label>
                 <input v-model="password" type="password" placeholder="输入密码">
             </label>
-            <button :class="{'login-btn':true,'ready':phone&&password}" @click="login">
+            <button :class="{'login-btn':true,'ready':qq&&password}" @click="login">
                 <span class="icon-right"></span>
             </button>
         </div>
