@@ -1,9 +1,11 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
-import Login from '../views/Login.vue';
-import Home from '../views/Home';
+import VueRouter from 'vue-router'
+import Login from '../views/Login'
+import Home from '../views/Home'
 
-Vue.use(VueRouter);
+const SignUp = () => import('../views/SignUp')
+
+Vue.use(VueRouter)
 
 const routes = [
     {
@@ -15,6 +17,11 @@ const routes = [
         path: '/home',
         name: '首页',
         component: Home
+    },
+    {
+        path: '/sign_up',
+        name: '注册',
+        component: SignUp
     }
 ]
 

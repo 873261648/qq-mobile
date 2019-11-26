@@ -17,7 +17,7 @@
         <div class="bottom">
             <p class="sign_up">
                 <span>忘记密码</span>
-                <span>用户注册</span>
+                <span @click="$router.push('/sign_up')">用户注册</span>
             </p>
             <p>登陆即代表同意并阅读<span>用户协议</span></p>
         </div>
@@ -27,15 +27,15 @@
 <script>
     export default {
         name: 'login',
-        data() {
+        data () {
             return {
                 qq: '',
                 password: ''
             }
         },
         methods: {
-            login() {
-                let result = this.$axios({
+            async login () {
+                let res = await this.$axios({
                     method: 'POST',
                     url: '/api/user/login',
                     data: {
@@ -43,6 +43,12 @@
                         password: this.password
                     }
                 })
+                console.log(res.data.errno)
+                if (res.data.errno !== 0) {
+                    alert('账号或密码错误！')
+                    return
+                }
+                await this.$router.replace('/home')
             }
         }
     }
