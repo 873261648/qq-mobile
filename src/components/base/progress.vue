@@ -6,7 +6,7 @@
 
 <script>
     export default {
-        name: 'progress',
+        name: 'BaseProgress',
         props: {
             color: {
                 type: String,
@@ -27,13 +27,13 @@
             }
         },
         computed: {
-            boxStyle () {
+            boxStyle() {
                 return {
                     height: this.width + 'px',
                     background: this.background
                 }
             },
-            progressStyle () {
+            progressStyle() {
                 return {
                     width: this.number + '%',
                     background: this.color
@@ -47,6 +47,7 @@
 <style lang="stylus" scoped>
     .progress-box {
         .progress {
+            transition all .4s
             height 100%
         }
     }
