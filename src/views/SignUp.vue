@@ -1,8 +1,8 @@
 <template>
     <div id="sign_up">
         <base-progress :number="number" :width="5"></base-progress>
-        <div class="icon icon-left"></div>
-        <transition name="left">
+        <div class="icon icon-left" @touchstart="$router.back()"></div>
+        <transition :name="transitionName">
             <router-view/>
         </transition>
     </div>
@@ -14,6 +14,11 @@
     export default {
         name: 'SignUp',
         components: {BaseProgress},
+        data() {
+            return {
+                transitionName: "slide-right"
+            }
+        },
         computed: {
             number() {
                 let routerName = this.$route.name;
@@ -25,6 +30,21 @@
                     num = 66;
                 }
                 return num;
+            }
+        },
+        watch: {
+            $route(to, from) {
+                if (to.meta.index > from.meta.index) {
+                    //设置动画名称
+                    this.transitionName = 'slide-left';
+                } else {
+                    this.transitionName = 'slide-right';
+                }
+            }
+        },
+        methods: {
+            back() {
+                this.$router.back()
             }
         }
     }

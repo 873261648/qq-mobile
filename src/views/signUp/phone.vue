@@ -8,7 +8,7 @@
             </span>
             <input type="text" v-model="phone">
         </label>
-        <button :class="{disable:disable}" @click="next">下一步</button>
+        <button :class="{disable}" @touchstart="next">下一步</button>
         <p class="tips">仅用于找回密码</p>
     </div>
 </template>
@@ -26,10 +26,19 @@
                 return this.phone.length !== 11
             }
         },
+        watch:{
+            $route(to, from) {
+                console.log(from.params.phone)
+            }
+        },
         methods: {
             next() {
-                if (this.disable) return;
-                this.$router.push(`/sign_up/password?phone=${this.phone}`)
+                this.$router.push({
+                    name: '输入密码',
+                    params: {
+                        phone: this.phone
+                    }
+                })
             }
         }
     }
@@ -92,6 +101,7 @@
             font-size 16px
 
             &.disable {
+                pointer-events none
                 background-color: #9ff1ff
             }
         }

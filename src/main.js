@@ -9,6 +9,7 @@ import Message from "./components/base/message/";
 
 import './assets/css/default.styl';
 import './assets/css/iconfont.css';
+import './assets/css/main.styl';
 
 Vue.config.productionTip = false;
 Vue.prototype.$axios = axios;

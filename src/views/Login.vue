@@ -10,14 +10,14 @@
             <label>
                 <input v-model="password" type="password" placeholder="输入密码">
             </label>
-            <button :class="{'login-btn':true,'ready':qq&&password}" @click="login">
+            <button :class="{'login-btn':true,'ready':qq&&password}" @touchstart="login">
                 <span class="icon icon-arrowright"></span>
             </button>
         </div>
         <div class="bottom">
             <p class="sign_up">
                 <span>忘记密码</span>
-                <span @click="$router.push('/sign_up')">用户注册</span>
+                <span @touchstart="$router.push('/sign_up')">用户注册</span>
             </p>
             <p>登陆即代表同意并阅读<span>用户协议</span></p>
         </div>
@@ -33,6 +33,11 @@
                 password: ''
             }
         },
+        created() {
+            if (this.$route.params.qq) {
+                this.qq = this.$route.params.qq;
+            }
+        },
         methods: {
             async login() {
                 let res = await this.$axios({
@@ -42,13 +47,14 @@
                         qq: this.qq,
                         password: this.password
                     }
-                })
-                console.log(res.data.errno)
+                });
                 if (res.data.errno !== 0) {
-                    alert('账号或密码错误！')
+                    alert('账号或密码错误！');
                     return
                 }
-                await this.$router.replace('/home')
+                this.$userInfo = res.data.result;
+                sessionStorage.setItem('userInfo', JSON.stringify(res.data.result));
+                this.$router.replace('/home')
             }
         }
     }

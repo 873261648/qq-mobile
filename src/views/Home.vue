@@ -1,19 +1,19 @@
 <template>
     <div class="home">
-<!--        <base-message v-if="aaa"/>-->
-        <img alt="Vue logo" src="../assets/logo.png" @click="alert">
-        <HelloWorld msg="welcome to Your Vue.js App"/>
+        <router-view/>
+        <the-app-bar/>
     </div>
 </template>
 
 <script>
-    // @ is an alias to /src
     import HelloWorld from '@/components/HelloWorld.vue'
     import BaseMessage from "../components/base/message/Main";
+    import TheAppBar from "../components/TheAppBar";
 
     export default {
         name: 'home',
         components: {
+            TheAppBar,
             BaseMessage,
             HelloWorld
         },
@@ -26,8 +26,8 @@
             alert() {
                 this.aaa = !this.aaa;
                 this.$message({
-                    type:"loading",
-                    message:"aaa"
+                    type: "loading",
+                    message: "aaa"
                 });
             }
         }
