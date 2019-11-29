@@ -10,9 +10,7 @@ const Done = () => import('../views/signUp/done');
 
 import Home from '../views/Home'
 
-const Chat = () => import('../views/home/chat');
-const Friend = () => import('../views/home/friend');
-const Dynamic = () => import('../views/home/dynamic');
+const Add = () => import('../views/home/friend/add');
 
 Vue.use(VueRouter);
 
@@ -21,26 +19,7 @@ const routes = [
         path: '/',
         name: '登录',
         component: Login
-    },
-    {
-        path: '/home',
-        name: '首页',
-        component: Home,
-        children: [{
-            path: '/home',
-            name: '消息',
-            component: Chat
-        }, {
-            path: '/home/friend',
-            name: '联系人',
-            component: Friend
-        }, {
-            path: '/home/dynamic',
-            name: '动态',
-            component: Dynamic
-        }]
-    },
-    {
+    }, {
         path: '/sign_up',
         name: '注册',
         component: SignUp,
@@ -60,6 +39,14 @@ const routes = [
             component: Done,
             meta: {index: 3},
         }]
+    }, {
+        path: '/home',
+        name: '首页',
+        component: Home
+    }, {
+        path: "/home/add",
+        name: "添加",
+        component: Add
     }
 ];
 

@@ -26,11 +26,6 @@
                 return this.phone.length !== 11
             }
         },
-        watch:{
-            $route(to, from) {
-                console.log(from.params.phone)
-            }
-        },
         methods: {
             next() {
                 this.$router.push({

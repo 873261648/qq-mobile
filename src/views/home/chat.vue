@@ -1,18 +1,21 @@
 <template>
     <div id="chat">
-        <app-header name="联系人">
+        <app-header name="消息">
             <span class="plus icon icon-plus"></span>
         </app-header>
+        <search-bar/>
+        <input type="text">
         chat
     </div>
 </template>
 
 <script>
     import AppHeader from "../../components/AppHeader";
+    import SearchBar from "../../components/base/searchBar";
 
     export default {
         name: "chat",
-        components: {AppHeader}
+        components: {SearchBar, AppHeader},
     }
 </script>
 

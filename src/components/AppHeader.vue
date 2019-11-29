@@ -1,10 +1,15 @@
 <template>
     <div id="header">
-        <div class="avatar">
+        <div class="left" v-if="back" @click="goBack">
+            <span class="icon icon-left"></span>
+        </div>
+        <div class="left avatar" v-else>
             <img :src="userInfo.avatar" alt="avatar">
         </div>
         <div class="name" v-html="name"></div>
-        <slot></slot>
+        <div class="right">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
@@ -15,11 +20,21 @@
             name: {
                 type: String,
                 require: true
+            },
+            back: {
+                type: Boolean,
+                default: false
             }
         },
         computed: {
             userInfo() {
                 return this.$store.getters.userInfo
+            }
+        },
+        methods: {
+            goBack() {
+                console.log(this.$route)
+                // window.history.back()
             }
         }
     }
@@ -27,11 +42,32 @@
 
 <style lang="stylus" scoped>
     #header {
-        display flex
-        align-items center
-        justify-content space-between
+        position relative
         background: linear-gradient(-45deg, #00a8ff, #00d9ff);
         padding 10px
+
+        .left
+        .right {
+            display flex
+            align-items center
+            height 30px
+            position: absolute;
+            top 10px
+
+            &.left {
+                left 10px
+            }
+
+            &.right {
+                right 10px
+            }
+
+            .icon {
+                font-size 24px
+                color #fff
+            }
+        }
+
 
         .avatar {
             img {
@@ -42,8 +78,10 @@
         }
 
         .name {
+            text-align center
             color #fff
             font-size 16px
+            line-height 30px
         }
     }
 </style>

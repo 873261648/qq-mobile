@@ -1,7 +1,9 @@
 <template>
     <ul id="app_bar">
-        <li v-for="item of barData" :key="item.id" :class="{active:active === item.id}" @touchstart="switchBar(item)">
+        <li v-for="item of barData" :key="item.componentName" :class="{active:active === item.componentName}"
+            @touchstart="switchBar(item.componentName)">
             <span :class="className(item.icon)"></span>
+            <span class="name" v-html="item.name"></span>
             <i class="badge" v-show="item.badge">{{item.badge|maxNum}}</i>
         </li>
     </ul>
@@ -12,21 +14,21 @@
         name: "theAppBar",
         data() {
             return {
-                active: "message",
+                active: "Chat",
                 barData: [{
-                    id: "message",
+                    name: "消息",
+                    componentName: "Chat",
                     icon: "icon-comment",
-                    target: "/home",
                     badge: 991
                 }, {
-                    id: "friend",
+                    name: "联系人",
+                    componentName: "Friend",
                     icon: "icon-user",
-                    target: "/home/friend",
                     badge: 0
                 }, {
-                    id: "dynamic",
+                    name: "动态",
+                    componentName: "Dynamic",
                     icon: "icon-star",
-                    target: "/home/dynamic",
                     badge: 0
                 }]
             }
@@ -42,12 +44,10 @@
                 className[icon] = true;
                 return className
             },
-            switchBar(item) {
-                let {id, target} = item;
-                if (this.active === id) return;
-                this.active = id;
-                item.badge = 0;
-                this.$router.replace(target)
+            switchBar(componentName) {
+                if (this.active === componentName) return;
+                this.active = componentName;
+                this.$emit('select', componentName)
             }
         }
     }
@@ -67,16 +67,28 @@
         li {
             padding 0 20px
             position relative
+            color #b0b2bf
 
-            span {
-                color #b0b2bf
+            .icon {
                 line-height 1
                 font-size 36px
             }
 
-            &.active span {
-                color #00ceff
+            .name {
+                display block
+                text-align center
+                font-size 12px
+                line-height 1
             }
+
+            &.active {
+                color #00ceff
+
+                .name {
+                    color #000
+                }
+            }
+
 
             .badge {
                 position: absolute
