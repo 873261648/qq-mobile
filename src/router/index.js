@@ -11,6 +11,7 @@ const Done = () => import('../views/signUp/done');
 import Home from '../views/Home'
 
 const Add = () => import('../views/home/friend/add');
+const ChatRoom = () => import('../views/home/chat/chatroom');
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,10 @@ const routes = [
         path: "/home/add",
         name: "添加",
         component: Add
+    }, {
+        path: "/home/chatroom",
+        name: "聊天室",
+        component: ChatRoom
     }
 ];
 

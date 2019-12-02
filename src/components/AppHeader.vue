@@ -1,6 +1,6 @@
 <template>
     <div id="header">
-        <div class="left" v-if="back" @click="goBack">
+        <div class="left" v-if="back" @click="$router.back()">
             <span class="icon icon-left"></span>
         </div>
         <div class="left avatar" v-else>
@@ -29,12 +29,6 @@
         computed: {
             userInfo() {
                 return this.$store.getters.userInfo
-            }
-        },
-        methods: {
-            goBack() {
-                console.log(this.$route)
-                // window.history.back()
             }
         }
     }

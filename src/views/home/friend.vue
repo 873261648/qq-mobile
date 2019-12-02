@@ -1,10 +1,10 @@
 <template>
     <div id="friend">
         <app-header name="联系人">
-            <span class="add icon icon-adduser" @click="goAdd"></span>
+            <span class="add icon icon-adduser" @click="$router.push('/home/add')"></span>
         </app-header>
         <search-bar/>
-        friend
+        <p>friend</p>
     </div>
 </template>
 
@@ -15,11 +15,6 @@
     export default {
         name: "friend",
         components: {SearchBar, AppHeader},
-        methods: {
-            goAdd() {
-                this.$router.push('/home/add')
-            }
-        }
     }
 </script>
 

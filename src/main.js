@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import axios from 'axios';
+import Axios from 'axios';
 
 import Message from "./components/base/message/";
 
@@ -12,7 +12,7 @@ import './assets/css/iconfont.css';
 import './assets/css/main.styl';
 
 Vue.config.productionTip = false;
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = Axios;
 Vue.prototype.$message = Message;
 
 

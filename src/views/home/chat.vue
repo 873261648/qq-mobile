@@ -4,7 +4,6 @@
             <span class="plus icon icon-plus"></span>
         </app-header>
         <search-bar/>
-        <input type="text">
         chat
     </div>
 </template>

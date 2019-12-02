@@ -52,9 +52,8 @@
                     alert('账号或密码错误！');
                     return
                 }
-                this.$userInfo = res.data.result;
                 sessionStorage.setItem('userInfo', JSON.stringify(res.data.result));
-                this.$router.replace('/home')
+                this.$router.push('/home')
             }
         }
     }
