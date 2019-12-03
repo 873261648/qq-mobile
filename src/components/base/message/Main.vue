@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div class="message" v-if="visible"><span class="icon-loading"></span>{{message}}</div>
+        <div class="message" v-if="visible"><span :class="className"></span>{{message}}</div>
     </transition>
 </template>
 
@@ -11,6 +11,37 @@
             return {
                 verticalOffset: 20,
                 visible: false
+            }
+        },
+        computed: {
+            className() {
+                let icon = {icon:true};
+                switch (this.type) {
+                    case 'error':
+                        icon['icon-frown'] = true;
+                        break;
+                    case 'loading':
+                        icon['icon-loading'] = true;
+                        break;
+                    case 'warning':
+                        icon['icon-meh'] = true;
+                        break;
+                    case 'success':
+                        icon['icon-smile'] = true;
+                        break;
+                }
+                return icon
+            }
+        },
+        created() {
+            this.close()
+        },
+        methods: {
+            close() {
+                if (this.duration === 0) return;
+                setTimeout(() => {
+                    this.visible = false;
+                }, this.duration || 3000)
             }
         }
     }
