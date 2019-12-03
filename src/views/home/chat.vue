@@ -20,6 +20,7 @@
 
 <style lang="stylus" scoped>
     #chat {
+        background-color: #fff
         .plus {
             font-size 24px
             color #fff

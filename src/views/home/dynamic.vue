@@ -19,6 +19,7 @@
 </script>
 <style lang="stylus" scoped>
     #dynamic {
+        background-color: #fff
         .set {
             font-size 24px
             color #fff

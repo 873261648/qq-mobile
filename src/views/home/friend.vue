@@ -20,6 +20,7 @@
 
 <style lang="stylus" scoped>
     #friend {
+        background-color: #fff
         .add {
             font-size 24px
             color #fff

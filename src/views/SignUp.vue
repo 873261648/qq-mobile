@@ -52,6 +52,9 @@
 
 <style lang="stylus" scoped>
     #sign_up {
+        height 100vh
+        background-color: #fff
+
         .icon-left {
             color #777
             font-size 24px

@@ -17,7 +17,7 @@
         <div class="bottom">
             <p class="sign_up">
                 <span>忘记密码</span>
-                <span @touchstart="$router.push('/sign_up')">用户注册</span>
+                <span @click="$router.push('/sign_up')">用户注册</span>
             </p>
             <p>登陆即代表同意并阅读<span>用户协议</span></p>
         </div>
@@ -27,19 +27,19 @@
 <script>
     export default {
         name: 'login',
-        data() {
+        data () {
             return {
                 qq: '',
                 password: ''
             }
         },
-        created() {
+        created () {
             if (this.$route.params.qq) {
-                this.qq = this.$route.params.qq;
+                this.qq = this.$route.params.qq
             }
         },
         methods: {
-            async login() {
+            async login () {
                 let res = await this.$axios({
                     method: 'POST',
                     url: '/api/user/login',
@@ -47,12 +47,12 @@
                         qq: this.qq,
                         password: this.password
                     }
-                });
+                })
                 if (res.data.errno !== 0) {
-                    alert('账号或密码错误！');
+                    this.$message.error('账号或密码错误！')
                     return
                 }
-                sessionStorage.setItem('userInfo', JSON.stringify(res.data.result));
+                sessionStorage.setItem('userInfo', JSON.stringify(res.data.result))
                 this.$router.push('/home')
             }
         }
@@ -64,6 +64,7 @@
         display flex
         flex-direction column
         justify-content space-between
+        background-color: #fff
         padding-top 100px
         height 100vh
 
