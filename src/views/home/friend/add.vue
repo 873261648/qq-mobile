@@ -23,28 +23,28 @@
             people,
             group
         },
-        data () {
+        data() {
             return {
                 active: ''
             }
         },
         computed: {
-            style () {
-                let style = {}
+            style() {
+                let style = {};
                 if (!this.$refs[this.active]) {
-                    style.left = 0 + 'px'
+                    style.left = 0 + 'px';
                     return 0 + 'px'
                 }
-                style.transition = 'all .2s'
-                style.left = this.$refs[this.active].offsetLeft + 'px'
+                style.transition = 'all .2s';
+                style.left = this.$refs[this.active].offsetLeft + 'px';
                 return style
             }
         },
-        mounted () {
+        mounted() {
             this.active = 'people'
         },
         methods: {
-            con () {
+            con() {
                 this.$router.push('/home/chatroom')
             }
         }

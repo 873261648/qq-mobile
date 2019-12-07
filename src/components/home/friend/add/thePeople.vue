@@ -4,7 +4,8 @@
 
         <p class="title">你可能感兴趣的人</p>
         <ul class="people-list">
-            <user-list-item v-for="item of strangerList" :key="item.qq" :item="item" @click="enterUserHome(item.qq)"></user-list-item>
+            <user-list-item v-for="item of strangerList" :key="item.qq" :item="item"
+                            @click="enterUserHome(item.qq)"></user-list-item>
         </ul>
     </div>
 </template>
@@ -14,22 +15,25 @@
 
     export default {
         name: 'thePeople',
-        components: { UserListItem },
-        data () {
+        components: {UserListItem},
+        data() {
             return {
                 strangerList: []
             }
         },
-        created () {
+        created() {
             this.getStranger()
         },
         methods: {
-            async getStranger () {
-                let res = await this.$axios.get('/api/friend/stranger')
+            async getStranger() {
+                let res = await this.$axios.get('/api/friend/stranger');
                 this.strangerList = res.data.result
             },
-            enterUserHome(qq){
-                console.log(qq)
+            enterUserHome(qq) {
+                this.$router.push({
+                    name: "个人主页",
+                    query: {qq}
+                })
             }
         }
     }

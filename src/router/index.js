@@ -12,6 +12,8 @@ import Home from '../views/Home'
 
 const Add = () => import('../views/home/friend/add');
 const ChatRoom = () => import('../views/home/chat/chatroom');
+const userHome = () => import('../views/home/other/userHome');
+const editData = () => import('../views/home/other/editData');
 
 Vue.use(VueRouter);
 
@@ -49,9 +51,13 @@ const routes = [
         name: "添加",
         component: Add
     }, {
-        path: "/home/chatroom",
-        name: "聊天室",
-        component: ChatRoom
+        path: "/home/user_home",
+        name: "个人主页",
+        component: userHome
+    },{
+        path: "/home/edit_data",
+        name: "编辑资料",
+        component: editData
     }
 ];
 
