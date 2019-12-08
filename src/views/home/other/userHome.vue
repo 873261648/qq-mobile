@@ -1,13 +1,18 @@
 <template>
     <div>
-        个人主页
+        <app-header name="个人主页" back/>
         <button @click="editData">编辑资料</button>
     </div>
 </template>
 
 <script>
+    import AppHeader from "../../../components/AppHeader";
+
     export default {
         name: "userHome",
+        components: {
+            AppHeader
+        },
         data() {
             return {
                 userInfo: {}

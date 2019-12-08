@@ -50,17 +50,17 @@
                 let res = await this.$axios.get('/api/user/info');
                 this.userInfo = res.data.result
             },
-            updateAvatar(e) {
+            async updateAvatar(e) {
                 let file = e.target.files[0];
                 if (!file) return;
                 let form = new FormData();
                 form.append('file', file);
-                this.$axios({
+                let res = await this.$axios({
                     method: "POST",
                     url: "/api/upload/avatar",
                     headers: {'content-Type': "multipart/form-data;charset=UTF-8"},
-                    data:form
-                })
+                    data: form
+                });
             }
         }
     }

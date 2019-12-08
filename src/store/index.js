@@ -15,7 +15,11 @@ export default new Vuex.Store({
             return state.userInfo;
         }
     },
-    mutations: {},
+    mutations: {
+        userInfo(state, val) {
+            state.userInfo = val
+        }
+    },
     actions: {},
     modules: {}
 })
