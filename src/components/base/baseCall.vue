@@ -4,7 +4,7 @@
         <div class="left">
             <p class="title" v-html="title" :style="{color:titleColor}"></p>
             <slot>
-                <input v-if="edit" type="text" :value="content" @change="change">
+                <input v-if="edit" type="text" :value="content" @input="change" :placeholder="placeholder">
                 <p v-else class="content" v-html="content"></p>
             </slot>
         </div>
@@ -14,7 +14,7 @@
 
 <script>
     export default {
-        name: "baseCall",
+        name: 'baseCall',
         props: {
             title: String,
             content: String,
@@ -23,19 +23,22 @@
             edit: {
                 type: Boolean,
                 default: false
+            },
+            placeholder: {
+                type: String
             }
         },
         computed: {
-            rightIconClassName() {
-                let className = {icon: true};
+            rightIconClassName () {
+                let className = { icon: true }
                 if (this.rightIcon) {
-                    className[this.rightIcon] = true;
+                    className[this.rightIcon] = true
                 }
                 return className
             }
         },
         methods: {
-            change(val) {
+            change (val) {
                 this.$emit('change', val)
             }
         }

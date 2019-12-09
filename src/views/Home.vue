@@ -8,12 +8,12 @@
 </template>
 
 <script>
-    import Chat from "./home/chat";
-    import Friend from "./home/friend";
-    import Dynamic from "./home/dynamic";
+    import Chat from './home/chat'
+    import Friend from './home/friend'
+    import Dynamic from './home/dynamic'
 
-    import BaseMessage from "../components/base/message/Main";
-    import TheAppBar from "../components/TheAppBar";
+    import BaseMessage from '../components/base/message/Main'
+    import TheAppBar from '../components/TheAppBar'
 
     export default {
         name: 'home',
@@ -24,21 +24,21 @@
             TheAppBar,
             BaseMessage
         },
-        data() {
+        data () {
             return {
-                componentName: "Chat",
+                componentName: 'Chat',
                 aaa: false
             }
         },
+        created () {
+            this.getUserInfo()
+        },
         methods: {
-            alert() {
-                this.aaa = !this.aaa;
-                this.$message({
-                    type: "loading",
-                    message: "aaa"
-                });
+            async getUserInfo () {
+                let res = await this.$axios.get(`/api/user/info`)
+                this.$store.commit('userInfo', res.data.result)
             },
-            selectBar(componentName) {
+            selectBar (componentName) {
                 this.componentName = componentName
             }
         }

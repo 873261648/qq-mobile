@@ -66,6 +66,8 @@
         .avatar {
             img {
                 width 30px
+                height 30px
+                object-fit cover
                 border-radius 100px
                 object-fit cover
             }
