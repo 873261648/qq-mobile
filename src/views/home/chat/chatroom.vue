@@ -9,7 +9,6 @@
 </template>
 
 <script>
-    import Vue from 'vue';
     import AppHeader from "../../../components/AppHeader";
 
     export default {
@@ -17,7 +16,9 @@
         components: {AppHeader},
         methods: {
             msg() {
-                this.$message.loading('新消息')
+                this.$message.loading({
+                    message: '新消息'
+                })
             }
         }
     }

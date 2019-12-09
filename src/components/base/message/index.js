@@ -14,6 +14,7 @@ const Message = (options = {}) => {
     if (typeof options === "string") {
         options = {message: options};
     }
+    options.cover = false;
     instance = new MessageConstructor({
         data: options
     });
@@ -21,6 +22,7 @@ const Message = (options = {}) => {
     instance.id = 'message_' + seed++;
     instance.$mount();
     instance.visible = true;
+    instance.cover = Boolean(options.cover);
     document.body.append(instance.$el);
     return instance
 };

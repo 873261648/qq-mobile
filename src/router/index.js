@@ -58,6 +58,10 @@ const routes = [
         path: "/home/edit_data",
         name: "编辑资料",
         component: editData
+    },{
+        path: "/home/chatroom",
+        name: "聊天室",
+        component: ChatRoom
     }
 ];
 
