@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="user_home">
         <app-header name="个人主页" back/>
         <button @click="editData">编辑资料</button>
     </div>
@@ -38,6 +38,8 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="stylus" scoped>
+    .user_home{
+        padding-top 50px
+    }
 </style>

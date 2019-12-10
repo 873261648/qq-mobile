@@ -1,0 +1,58 @@
+const officeList = [{
+    tag:'IT',
+    label:"计算机/互联网/通信",
+    color:"#8ebde9"
+},{
+    tag:'制造',
+    label:"生产/工艺/制造",
+    color:"#8ebde9"
+},{
+    tag:'医疗',
+    label:"医疗/护理/制药",
+    color:"#8ebde9"
+},{
+    tag:'金融',
+    label:"金融/银行/投资/保险",
+    color:"#ebb15d"
+},{
+    tag:'商业',
+    label:"商业/服务业/个体经营",
+    color:"#ebb15d"
+},{
+    tag:'文化',
+    label:"文化/广告/传媒",
+    color:"#ed875f"
+},{
+    tag:'艺术',
+    label:"娱乐/艺术/表演",
+    color:"#ed875f"
+},{
+    tag:'法律',
+    label:"律师/法务",
+    color:"#acd4cc"
+},{
+    tag:'教育',
+    label:"教育/培训",
+    color:"#acd4cc"
+},{
+    tag:'行政',
+    label:"公务员/行政/事业单位",
+    color:"#acd4cc"
+},{
+    tag:'模特',
+    label:"模特",
+    color:"#c3afe2"
+},{
+    tag:'空姐',
+    label:"空姐",
+    color:"#c3afe2"
+},{
+    tag:'学生',
+    label:"学生",
+    color:"#dfabc1"
+},{
+    tag:'其他',
+    label:"其他职业",
+    color:"#666"
+}]
+export default officeList

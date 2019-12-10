@@ -14,7 +14,10 @@ export default new Vuex.Store({
     },
     mutations: {
         userInfo (state, val) {
-            state.userInfo = val
+            state.userInfo = {
+                ...state.userInfo,
+                ...val
+            }
         }
     },
     modules: {}

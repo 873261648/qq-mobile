@@ -30,14 +30,7 @@
                 aaa: false
             }
         },
-        created () {
-            this.getUserInfo()
-        },
         methods: {
-            async getUserInfo () {
-                let res = await this.$axios.get(`/api/user/info`)
-                this.$store.commit('userInfo', res.data.result)
-            },
             selectBar (componentName) {
                 this.componentName = componentName
             }

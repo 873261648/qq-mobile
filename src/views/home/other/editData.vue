@@ -7,11 +7,14 @@
                     <input class="upload_avatar" type="file" accept="image/*" :multiple="false" @change="updateAvatar">
                 </base-call>
                 <base-call title="个性签名" :edit="true" :content="userInfo.introduction" placeholder="暂时还没有签名哦"
-                           @change="update($event,'introduction')"/>
+                           @change="update($event.target.value,'introduction')"/>
             </base-call-group>
             <base-call-group>
-                <base-call title="昵称" :edit="true" :content="userInfo.nickname" @change="update($event,'nickname')"/>
-                <base-call title="性别" rightIcon="icon-right"/>
+                <base-call title="昵称" :edit="true" :content="userInfo.nickname"
+                           @change="update($event.target.value,'nickname')"/>
+                <base-call title="性别" rightIcon="icon-right">
+                    <base-picker v-model="userInfo.gender" :columns="['保密','男','女']" @change="updateGender"/>
+                </base-call>
                 <base-call title="生日" rightIcon="icon-right"/>
             </base-call-group>
             <base-call-group title="教育经历">
@@ -20,7 +23,16 @@
                 <base-call title="添加小学" titleColor="#40a0ff"/>
             </base-call-group>
             <base-call-group>
-                <base-call title="职业" content="计算机/互联网/通信"/>
+                <base-call title="职业" rightIcon="icon-right">
+                    <p class="office" @click="goOffice(office.tag)">
+                        <span class="tag" :style="{background:office.color}" v-html="office.tag"></span>
+                        {{office.label}}
+                    </p>
+                </base-call>
+                <base-call title="公司" :edit="true" :content="userInfo.company" placeholder="填写公司，发现同事"/>
+                <base-call title="所在地" content="北京" rightIcon="icon-right"/>
+                <base-call title="家乡" content="河南-洛阳" rightIcon="icon-right"/>
+                <base-call title="邮箱" :edit="true" :content="userInfo.email" placeholder="你的邮箱"/>
             </base-call-group>
         </div>
     </div>
@@ -28,16 +40,18 @@
 
 <script>
     import AppHeader from '@/components/AppHeader'
-    import BaseCallGroup from '@/components/base/baseCallGroup'
-    import BaseCall from '@/components/base/baseCall'
     import { antiShake } from '@/units/unit'
+    import officeList from '@/data/office'
 
     export default {
         name: 'editData',
         components: {
-            BaseCall,
-            BaseCallGroup,
             AppHeader
+        },
+        data () {
+            return {
+                gender: '男',
+            }
         },
         computed: {
             userInfo: {
@@ -47,30 +61,40 @@
                 set (val) {
                     this.$store.commit('userInfo', val)
                 }
+            },
+            office () {
+                return officeList.find(item => {
+                    return item.tag === this.userInfo.office
+                }) || {
+                    tag: '',
+                    label: '',
+                    color: '#666'
+                }
             }
         },
         methods: {
-            async getUserInfo () {
-                let res = await this.$axios.get(`/api/user/info`)
-                this.userInfo = res.data.result
-            },
             async updateAvatar (e) {
                 let file = e.target.files[0]
                 if (!file) return
                 let form = new FormData()
                 form.append('file', file)
-                await this.$axios({
+                let res = await this.$axios({
                     method: 'POST',
                     url: '/api/upload/avatar',
                     headers: { 'content-Type': 'multipart/form-data;charset=UTF-8' },
                     data: form
                 })
-                this.getUserInfo()
+                this.userInfo = {
+                    avatar: res.data.result.avatar
+                }
             },
-            update (e, key) {
+            updateGender (val) {
+                this.update(val, 'gender')
+            },
+            update (val, key) {
                 antiShake(1000).then(() => {
                     let data = {}
-                    data[key] = e.target.value
+                    data[key] = val
                     this.updateUserInfo(data)
                 })
             },
@@ -80,7 +104,13 @@
                     url: '/api/user/updateinfo',
                     data
                 })
-                this.getUserInfo()
+                this.userInfo = data
+            },
+            goOffice (tag) {
+                this.$router.push({
+                    name: '行业',
+                    query: { tag }
+                })
             }
         }
     }
@@ -88,6 +118,8 @@
 
 <style lang="stylus" scoped>
     #edit_data {
+        padding-top 50px
+
         .content {
             > div {
                 margin-top 20px
@@ -95,6 +127,26 @@
 
             .upload_avatar {
                 opacity 0
+            }
+
+            .office {
+                width 100%
+                height 100%
+                display flex
+                align-items center
+
+                .tag {
+                    display inline-block
+                    font-size 12px
+                    color #fff
+                    text-align center
+                    width 2em
+                    height 1em
+                    line-height 1
+                    border-radius 4px
+                    padding 3px 5px
+                    margin-right 10px
+                }
             }
         }
     }
