@@ -9,7 +9,7 @@
 </template>
 
 <script>
-    import BaseProgress from '../components/base/progress'
+    import BaseProgress from '../components/base/baseProgress'
 
     export default {
         name: 'SignUp',

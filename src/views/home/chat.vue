@@ -4,7 +4,7 @@
             <span class="plus icon icon-plus"></span>
         </app-header>
         <search-bar/>
-        chat
+        <button @click="$router.push({name:'聊天室'})">chat</button>
     </div>
 </template>
 

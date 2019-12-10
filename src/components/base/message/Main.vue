@@ -81,19 +81,4 @@
         z-index: 999;
         background-color: rgba(0, 0, 0, .3);
     }
-
-    .fade-leave-active
-    .fade-enter-active {
-        transition: all .4s ease;
-    }
-
-    .fade-enter-to,
-    .fade-leave {
-        opacity: 1;
-    }
-
-    .fade-enter,
-    .fade-leave-to {
-        opacity: 0;
-    }
 </style>
