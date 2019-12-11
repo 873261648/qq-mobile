@@ -1,32 +1,29 @@
 <template>
     <div>
         <!--        <app-header back name="添加"/>-->
-        <p @click="msg">chatroom</p>
-        <base-picker :columns="columns" v-model="value"></base-picker>
+        <p>选择器</p>
+        <base-date-picker v-model="value"/>
+        <!--        <base-picker v-model="value2" :options="['北京','上海','深圳']"/>-->
+        <base-city-picker v-model="value3"/>
+        <button @click="dialog">dialog</button>
     </div>
 </template>
 
 <script>
-    import AppHeader from "../../../components/AppHeader";
-
     export default {
         name: "chatroom",
-        components: {AppHeader},
         data() {
             return {
-                value: "杭州",
-                columns: ['北京', '上海', '江苏', '苏州', '南京', '杭州', '金华']
-            }
-        },
-        watch: {
-            value(val) {
-                console.log(val)
+                value: 1576031291167,
+                value2: "上海",
+                value3: '河南省-洛阳市',
             }
         },
         methods: {
-            msg() {
-                this.$message.loading({
-                    message: '新消息'
+            dialog() {
+                this.$dialog({
+                    title:"登录失败",
+                    message:"账号或密码错误，请重新输入。"
                 })
             },
             change(val) {

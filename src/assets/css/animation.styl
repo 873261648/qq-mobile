@@ -27,3 +27,54 @@
 .slide-in-down-leave-to {
     transform translate(0, 251px)
 }
+
+// 页面转场动画
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-left-enter-active,
+.slide-left-leave-active {
+    will-change: transform;
+    transition: all 500ms;
+    position: absolute;
+}
+
+.slide-right-enter {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+}
+
+.slide-right-leave-active {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+}
+
+.slide-left-enter {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+}
+
+.slide-left-leave-active {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+}
+
+.bounce-leave-active
+.bounce-enter-active {
+    transition: all .2s ease;
+}
+
+.bounce-enter-to {
+    transform scale(1, 1)
+}
+
+.bounce-enter {
+    transform scale(.5, .5)
+}
+
+.bounce-leave {
+    opacity 1
+}
+
+.bounce-leave-to {
+    opacity 0
+}
