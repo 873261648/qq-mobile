@@ -24,8 +24,8 @@
 </template>
 
 <script>
-    import provinceList from '../../data/province';
-    import cityList from '../../data/city';
+    import provinceList from '../../data/province'
+    import cityList from '../../data/city'
 
     export default {
 
@@ -40,63 +40,62 @@
                 require: true,
             }
         },
-        data() {
+        data () {
             return {
                 active: [],
                 show: false
             }
         },
         computed: {
-            style() {
-                let active = this.active;
+            style () {
+                let active = this.active
                 return active.map((activeItem, i) => {
                     let index = this.options[i].findIndex((item) => {
                         return item.id === activeItem
-                    });
-                    index -= 2;
+                    })
+                    index -= 2
                     return {
                         transform: `translate(0,${index * -40}px)`,
                         width: `calc(100% / ${this.active.length})`
                     }
-                });
+                })
             },
-            province() {
+            province () {
                 return provinceList
             },
-            city() {
-                let city = cityList[this.active[0]];
-                let presence = city.findIndex(item => item.id === this.active[1]);
+            city () {
+                let city = cityList[this.active[0]]
+                let presence = city.findIndex(item => item.id === this.active[1])
                 if (presence < 0) {
-                    this.active[1] = cityList[this.active[0]][0].id;
+                    this.active[1] = cityList[this.active[0]][0].id
                 }
-                return cityList[this.active[0]];
+                return cityList[this.active[0]]
             },
-            options() {
+            options () {
                 return [this.province, this.city]
             }
         },
         methods: {
-            init() {
-                this.show = true;
-                if (this.value) {
-                    this.active = this.findIDByName(this.value.split('-'))
-                }
+            init () {
+                this.show = true
+                let value = this.value || '北京市-市辖区'
+                this.active = this.findIDByName(value.split('-'))
             },
-            clickMe({id, name}, index) {
-                this.active.splice(index, 1, id);
+            clickMe ({ id, name }, index) {
+                this.active.splice(index, 1, id)
             },
-            change() {
-                this.$emit('input', this.findNameByID(this.active).join('-'));
+            change () {
+                this.$emit('input', this.findNameByID(this.active).join('-'))
                 this.show = false
             },
-            findNameByID(IDArray) {
-                let province = provinceList.find(item => item.id === IDArray[0]);
-                let city = cityList[province.id].find(item => item.id === IDArray[1]);
+            findNameByID (IDArray) {
+                let province = provinceList.find(item => item.id === IDArray[0])
+                let city = cityList[province.id].find(item => item.id === IDArray[1])
                 return [province.name, city.name]
             },
-            findIDByName(nameArray) {
-                let province = provinceList.find(item => item.name === nameArray[0]);
-                let city = cityList[province.id].find(item => item.name === nameArray[1]);
+            findIDByName (nameArray) {
+                let province = provinceList.find(item => item.name === nameArray[0])
+                let city = cityList[province.id].find(item => item.name === nameArray[1])
                 return [province.id, city.id]
             }
         }

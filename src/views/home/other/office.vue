@@ -31,15 +31,15 @@
         },
         methods: {
             async setOffice (tag) {
+                this.$store.commit('userInfo', {
+                    office: tag
+                })
                 await this.$axios({
                     method: 'POST',
                     url: '/api/user/updateinfo',
                     data: {
                         office: tag
                     }
-                })
-                this.$store.commit('userInfo', {
-                    office: tag
                 })
                 this.$router.back()
             }

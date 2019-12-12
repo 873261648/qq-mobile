@@ -13,9 +13,13 @@
                 <base-call title="昵称" :edit="true" :content="userInfo.nickname"
                            @change="update($event.target.value,'nickname')"/>
                 <base-call title="性别" rightIcon="icon-right">
-                    <base-picker v-model="userInfo.gender" :columns="['保密','男','女']" @change="updateGender"/>
+                    <base-picker v-model="userInfo.gender"
+                                 :options="['保密','男','女']"
+                                 @change="(val)=>{update(val,'gender',0)}"/>
                 </base-call>
-                <base-call title="生日" rightIcon="icon-right"/>
+                <base-call title="生日" rightIcon="icon-right">
+                    <base-date-picker v-model="userInfo.birthday" @input="(val)=>{update(val, 'birthday', 0)}"/>
+                </base-call>
             </base-call-group>
             <base-call-group title="教育经历">
                 <base-call title="添加大学" titleColor="#40a0ff"/>
@@ -29,10 +33,23 @@
                         {{office.label}}
                     </p>
                 </base-call>
-                <base-call title="公司" :edit="true" :content="userInfo.company" placeholder="填写公司，发现同事"/>
-                <base-call title="所在地" content="北京" rightIcon="icon-right"/>
-                <base-call title="家乡" content="河南-洛阳" rightIcon="icon-right"/>
-                <base-call title="邮箱" :edit="true" :content="userInfo.email" placeholder="你的邮箱"/>
+                <base-call title="公司" :edit="true"
+                           :content="userInfo.company"
+                           placeholder="填写公司，发现同事"
+                           @change="update($event.target.value,'company')"/>
+                <base-call title="所在地" rightIcon="icon-right">
+                    <base-city-picker v-model="userInfo.location"
+                                      @input="(val)=>{update(val, 'location', 0)}"/>
+                </base-call>
+                <base-call title="家乡" rightIcon="icon-right">
+                    <base-city-picker v-model="userInfo.hometown"
+                                      @input="(val)=>{update(val, 'hometown', 0)}"/>
+                </base-call>
+                <base-call title="邮箱"
+                           :edit="true"
+                           :content="userInfo.email"
+                           placeholder="你的邮箱"
+                           @change="update($event.target.value,'email')"/>
             </base-call-group>
         </div>
     </div>
@@ -47,11 +64,6 @@
         name: 'editData',
         components: {
             AppHeader
-        },
-        data () {
-            return {
-                gender: '男',
-            }
         },
         computed: {
             userInfo: {
@@ -88,11 +100,9 @@
                     avatar: res.data.result.avatar
                 }
             },
-            updateGender (val) {
-                this.update(val, 'gender')
-            },
-            update (val, key) {
-                antiShake(1000).then(() => {
+            update (val, key, delay = 1000) {
+                console.log(arguments)
+                antiShake(delay).then(() => {
                     let data = {}
                     data[key] = val
                     this.updateUserInfo(data)
