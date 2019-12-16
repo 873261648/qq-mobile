@@ -1,6 +1,6 @@
 <template>
     <div class="picker">
-        <p class="input" v-html="value" @click="show=true"></p>
+        <p class="input" v-html="value" @click="showPicker"></p>
         <base-overlay :show.sync="show"/>
 
         <transition name="slide-in-down">
@@ -36,35 +36,37 @@
                 default: ''
             }
         },
-        data() {
+        data () {
             return {
                 active: '',
                 show: false
             }
         },
         computed: {
-            style() {
+            style () {
                 let index = this.options.findIndex((item) => {
                     return item === this.active
-                });
-                index -= 2;
+                })
+                index -= 2
                 return {
                     transform: `translate(0,${index * -40}px)`,
                     width: `100%`
                 }
             }
         },
-        created() {
-            if (this.value) {
-                this.active = this.value
-            }
-        },
         methods: {
-            clickMe(item) {
+            showPicker () {
+                this.show = true;
+                if (this.value) {
+                    this.active = this.value
+                }
+            },
+            clickMe (item) {
                 this.active = item
             },
-            change() {
-                this.$emit('change', this.active);
+            change () {
+                this.$emit('input', this.active)
+                this.$emit('change', this.active)
                 this.show = false
             }
         }

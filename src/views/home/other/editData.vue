@@ -29,7 +29,7 @@
             <base-call-group>
                 <base-call title="职业" rightIcon="icon-right">
                     <p class="office" @click="goOffice(office.tag)">
-                        <span class="tag" :style="{background:office.color}" v-html="office.tag"></span>
+                        <span class="tag" v-if="office.tag" :style="{background:office.color}" v-html="office.tag"></span>
                         {{office.label}}
                     </p>
                 </base-call>
@@ -101,7 +101,6 @@
                 }
             },
             update (val, key, delay = 1000) {
-                console.log(arguments)
                 antiShake(delay).then(() => {
                     let data = {}
                     data[key] = val

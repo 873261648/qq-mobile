@@ -1,6 +1,6 @@
 <template>
     <div class="cell_group">
-        <p class="title" v-html="title"></p>
+        <p class="label" v-html="title"></p>
         <slot/>
     </div>
 </template>
@@ -16,10 +16,11 @@
 
 <style lang="stylus" scoped>
     .cell_group {
-        .title {
+        .label {
             padding 0 20px
             color #8d919f
             margin-bottom 5px
+            font-size 12px
         }
         >div+div{
             border-top 1px solid #ebedf6

@@ -53,6 +53,7 @@
 
 <style lang="stylus" scoped>
     #add {
+        padding-top  50px
         .find_by {
             position relative
             display flex

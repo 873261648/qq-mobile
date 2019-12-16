@@ -11,10 +11,12 @@ const Done = () => import('../views/signUp/done');
 import Home from '../views/Home'
 
 const Add = () => import('../views/home/friend/add');
+const SendVerify = () => import('../views/home/friend/sendVerify');
 const ChatRoom = () => import('../views/home/chat/chatroom');
 const userHome = () => import('../views/home/other/userHome');
 const editData = () => import('../views/home/other/editData');
 const Office = () => import('../views/home/other/office');
+
 
 Vue.use(VueRouter);
 
@@ -51,6 +53,10 @@ const routes = [
         path: "/home/add",
         name: "添加",
         component: Add
+    },{
+        path: "/home/send_verify",
+        name: "发送验证",
+        component: SendVerify
     }, {
         path: "/home/user_home",
         name: "个人主页",
