@@ -1,7 +1,7 @@
 <template>
     <div class="send_verify">
         <app-header name="添加好友" back>
-            <button class="send" @click="send">发送</button>
+            <base-button class="send" type="text" @click="send">发送</base-button>
         </app-header>
         <div class="info">
             <img :src="hisInfo.avatar" alt="">
@@ -23,7 +23,7 @@
         <base-call-group title="设置备注和分组">
             <base-call title="备注" edit v-model="request.remark"/>
             <base-call title="分组">
-                <base-picker v-model="request.group" :options="groups"/>
+                <base-picker v-model="request.sort" :options="sorts"/>
             </base-call>
         </base-call-group>
     </div>
@@ -37,14 +37,13 @@
                 request: {
                     message: '',
                     remark: '',
-                    group: '默认分组'
+                    sort: '默认分组'
                 },
-                groups: ['默认分组', '我最关心', '大学同学']
+                sorts: ['默认分组', '我最关心', '大学同学']
             }
         },
         computed: {
             userInfo () {
-                this.request.message = `我是${this.$store.getters.userInfo.nickname}`
                 return this.$store.getters.userInfo
             },
             hisInfo () {
@@ -56,14 +55,31 @@
                 return new Date().getFullYear() - year + '岁'
             }
         },
+        watch: {
+            userInfo (val) {
+                this.request.message = `我是${val.nickname}`
+            }
+        },
         created () {
             if (this.userInfo.nickname) {
                 this.request.message = `我是${this.userInfo.nickname}`
             }
         },
         methods: {
-            send () {
-                console.log( this.request)
+            async send () {
+                let res = await this.$axios({
+                    method: 'POST',
+                    url: '/api/friend/add',
+                    data: {
+                        ...this.request,
+                        id: this.hisInfo.qq
+                    }
+                })
+                if (res.data.errno === -1) {
+                    this.$message.error(res.data.message)
+                } else {
+                    this.$message.success('发送成功，等待好友验证！')
+                }
             }
         }
     }
@@ -72,12 +88,6 @@
 <style lang="stylus" scoped>
     .send_verify {
         padding-top 50px
-
-        .send {
-            background-color: transparent
-            color #fff
-            font-size 16px
-        }
 
         .info {
             display flex

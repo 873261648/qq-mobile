@@ -12,6 +12,7 @@ import Home from '../views/Home'
 
 const Add = () => import('../views/home/friend/add');
 const SendVerify = () => import('../views/home/friend/sendVerify');
+const NewFriend = () => import('../views/home/friend/newFriend');
 const ChatRoom = () => import('../views/home/chat/chatroom');
 const userHome = () => import('../views/home/other/userHome');
 const editData = () => import('../views/home/other/editData');
@@ -53,6 +54,10 @@ const routes = [
         path: "/home/add",
         name: "添加",
         component: Add
+    }, {
+        path: "/home/new_friend",
+        name: "新朋友",
+        component: NewFriend
     },{
         path: "/home/send_verify",
         name: "发送验证",
