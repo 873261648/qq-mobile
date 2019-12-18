@@ -4,7 +4,7 @@
             <base-button type="text">添加</base-button>
         </app-header>
         <base-call-group title="好友通知">
-            <new-friend-item v-for="item of addList" :key="item.id" :data="item"></new-friend-item>
+            <new-friend-item v-for="item of addList" :key="item.id" :data="item" @agree="agree"></new-friend-item>
         </base-call-group>
     </div>
 </template>
@@ -27,6 +27,16 @@
             async getAddList () {
                 let res = await this.$axios.get('/api/friend/addlist')
                 this.addList = res.data.result
+            },
+            async agree (data) {
+                let res = await this.$axios({
+                    method: 'POST',
+                    url: '/api/friend/agree',
+                    data: {
+                        id: data.id
+                    }
+                })
+                console.log(res)
             }
         }
     }
