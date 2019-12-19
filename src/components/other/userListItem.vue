@@ -6,7 +6,9 @@
                 <span class="nickname">{{item.nickname}}</span>
                 <span class="qq">（{{item.qq}}）</span>
             </div>
-            <div class="bottom"></div>
+            <div class="bottom">
+
+            </div>
         </div>
     </li>
 </template>

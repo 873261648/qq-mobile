@@ -41,6 +41,7 @@
         top 0
         background: linear-gradient(-45deg, #00a8ff, #00d9ff);
         padding 10px
+        z-index 98
 
         .left
         .right {

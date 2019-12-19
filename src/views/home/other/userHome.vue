@@ -5,7 +5,8 @@
             <div class="name" :style="{opacity:headerOpacity}">个人主页</div>
             <div class="right">设置</div>
         </div>
-        <img class="home_bg" :src="homeBgUrl" alt="">
+        <input v-show="false" type="file" accept="image/*" :multiple="false" ref="inputFile" @change="updateHomeBG">
+        <img class="home_bg" :src="homeBgUrl" alt="" @click="openFileWindow">
         <div class="info">
             <img :src="hisInfo.avatar" alt="">
             <div class="text">
@@ -22,19 +23,17 @@
                 </div>
             </div>
         </div>
-        <div class="introduction">
-            <span class="icon icon-edit-fill"></span>
+        <user-info-item v-if="hisInfo.introduction" left-icon="icon-edit-fill">
             <p v-html="hisInfo.introduction"></p>
-            <span class="icon icon-right"></span>
-        </div>
-        <div class="introduction">
-            <span class="icon icon-crown"></span>
+        </user-info-item>
+        <user-info-item v-if="hisInfo.birthday" left-icon="icon-smile">
+            <p v-html="age"></p>
+        </user-info-item>
+        <user-info-item left-icon="icon-crown">
             <p>{{relation === 'self' ? '你':'TA'}}还未开通任何特权服务</p>
-            <span class="icon icon-right"></span>
-        </div>
-
+        </user-info-item>
         <div class="bottom">
-            <button v-if="relation === 'stranger'">加为好友</button>
+            <button v-if="relation === 'stranger'" @click="goSendVerify">加为好友</button>
             <button v-if="relation === 'friend'" class="primary">发送消息</button>
             <button v-if="relation === 'self'" @click="editData">编辑资料</button>
         </div>
@@ -43,10 +42,12 @@
 
 <script>
     import AppHeader from '../../../components/AppHeader'
+    import UserInfoItem from '../../../components/other/userInfoItem'
 
     export default {
         name: 'userHome',
         components: {
+            UserInfoItem,
             AppHeader
         },
         data () {
@@ -63,10 +64,15 @@
                 return this.$store.getters.userInfo
             },
             relation () {
-                return Number(this.qq) === this.userInfo.qq ? 'self' : 'friend'
+                return Number(this.qq) === this.userInfo.qq ? 'self' : 'stranger'
             },
             homeBgUrl () {
                 return this.hisInfo.home_bg || require('@/assets/img/defaule_home_bg.png')
+            },
+            age () {
+                if (!this.hisInfo.birthday || this.hisInfo.birthday === '保密') return ''
+                let year = new Date(this.hisInfo.birthday).getFullYear()
+                return new Date().getFullYear() - year + '岁'
             },
             constellation () {
                 if (!this.hisInfo.birthday) {
@@ -97,8 +103,31 @@
                 let res = await this.$axios.get(`/api/user/info?qq=${this.qq}`)
                 this.hisInfo = res.data.result
             },
+            goSendVerify () {
+                this.$router.push({
+                    name: '发送验证',
+                    query: this.hisInfo
+                })
+            },
             editData () {
                 this.$router.push({ name: '编辑资料' })
+            },
+            openFileWindow () {
+                if (this.relation !== 'self') return
+                this.$refs['inputFile'].click()
+            },
+            async updateHomeBG (e) {
+                let file = e.target.files[0]
+                if (!file) return
+                let form = new FormData()
+                form.append('file', file)
+                let res = await this.$axios({
+                    method: 'POST',
+                    url: '/api/upload/home_bg',
+                    headers: { 'content-Type': 'multipart/form-data;charset=UTF-8' },
+                    data: form
+                })
+                this.hisInfo.home_bg = res.data.result.home_bg
             }
         }
     }
@@ -147,7 +176,7 @@
 
         .home_bg {
             width 100vw
-            height 75vw
+            height 200px
             object-fit cover
         }
 
@@ -156,6 +185,7 @@
             align-items center
             margin-top -41px
             padding 0 20px
+            margin-bottom 20px
 
             img {
                 width 80px
@@ -173,6 +203,7 @@
                     color #fff
                     font-size 18px
                     font-weight bold
+                    text-shadow 0 0 2px rgba(0, 0, 0, .8)
                 }
 
                 .bottom {
