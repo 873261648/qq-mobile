@@ -4,7 +4,13 @@
             <span class="add icon icon-adduser" @click="$router.push('/home/add')"></span>
         </app-header>
         <search-bar/>
-        <div class="new_friend" @click="$router.push('/home/new_friend')"><span>新朋友</span><span class="icon icon-right"></span></div>
+        <div class="new_friend" @click="$router.push('/home/new_friend')">
+            <span>新朋友</span>
+            <span class="icon icon-right"></span>
+        </div>
+        <div class="content">
+            <ul></ul>
+        </div>
         <p>friend</p>
     </div>
 </template>
@@ -16,6 +22,23 @@
     export default {
         name: 'friend',
         components: { SearchBar, AppHeader },
+        data () {
+            return {
+                tabList: [
+                    { label: '', value: '' }
+                ],
+                friendList: []
+            }
+        },
+        created () {
+            this.getFriend()
+        },
+        methods: {
+            async getFriend () {
+                let res = await this.$axios.get('/api/friend/allfriend')
+
+            }
+        }
     }
 </script>
 

@@ -26,8 +26,7 @@
         },
         data () {
             return {
-                componentName: 'Chat',
-                aaa: false
+                componentName: 'Chat'
             }
         },
         methods: {
@@ -37,6 +36,3 @@
         }
     }
 </script>
-<style>
-
-</style>

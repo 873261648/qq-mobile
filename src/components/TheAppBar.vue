@@ -11,43 +11,50 @@
 
 <script>
     export default {
-        name: "theAppBar",
-        data() {
+        name: 'theAppBar',
+        data () {
             return {
-                active: "Chat",
+                active: 'Chat',
                 barData: [{
-                    name: "消息",
-                    componentName: "Chat",
-                    icon: "icon-comment",
+                    name: '消息',
+                    componentName: 'Chat',
+                    icon: 'icon-comment',
                     badge: 991
                 }, {
-                    name: "联系人",
-                    componentName: "Friend",
-                    icon: "icon-user",
+                    name: '联系人',
+                    componentName: 'Friend',
+                    icon: 'icon-user',
                     badge: 0
                 }, {
-                    name: "动态",
-                    componentName: "Dynamic",
-                    icon: "icon-star",
+                    name: '动态',
+                    componentName: 'Dynamic',
+                    icon: 'icon-star',
                     badge: 0
                 }]
             }
         },
         filters: {
-            maxNum(num) {
-                return num < 100 ? num : "99+"
+            maxNum (num) {
+                return num < 100 ? num : '99+'
+            }
+        },
+        created () {
+            let homeActive = sessionStorage.getItem('homeActive')
+            if (homeActive) {
+                this.switchBar(homeActive)
             }
         },
         methods: {
-            className(icon) {
-                let className = {icon: true};
-                className[icon] = true;
+            className (icon) {
+                let className = { icon: true }
+                className[icon] = true
                 return className
             },
-            switchBar(componentName) {
-                if (this.active === componentName) return;
-                this.active = componentName;
+            switchBar (componentName) {
+                if (this.active === componentName) return
+                this.active = componentName
                 this.$emit('select', componentName)
+                sessionStorage.setItem('homeActive', componentName)
             }
         }
     }
