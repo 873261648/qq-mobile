@@ -45,23 +45,23 @@
         },
         computed: {
             style () {
-                let active = this.active
+                let active = this.active;
                 return active.map((activeItem, i) => {
-                    let index = this.options[i].findIndex((item) => item === activeItem)
+                    let index = this.options[i].findIndex((item) => item === activeItem);
                     // 一共显示五行，起始位置应该是第三个位置
-                    index -= 2
+                    index -= 2;
                     return { transform: `translate(0,${index * -40}px)`, width: `calc(100% / ${this.active.length})` }
                 })
             },
             y () {
-                let y = []
+                let y = [];
                 for (let i = 1900; i < new Date().getFullYear() + 1; i++) {
                     y.push(i)
                 }
                 return y
             },
             m () {
-                let m = []
+                let m = [];
                 for (let i = 0; i < 12; i++) {
                     m.push(i + 1)
                 }
@@ -69,8 +69,8 @@
             },
             d () {
                 // 获取当月天数
-                let dNum = new Date(this.active[0], this.active[1], 0).getDate()
-                let d = []
+                let dNum = new Date(this.active[0], this.active[1], 0).getDate();
+                let d = [];
                 for (let i = 0; i < dNum; i++) {
                     d.push(i + 1)
                 }
@@ -87,8 +87,8 @@
         methods: {
             timeStampStrYMD,
             init () {
-                this.show = true
-                let date = new Date()
+                this.show = true;
+                let date = new Date();
                 if (this.value) {
                     date = new Date(this.value)
                 }
@@ -98,8 +98,8 @@
                 this.active.splice(index, 1, num)
             },
             change () {
-                let date = new Date(this.active[0], this.active[1] - 1, this.active[2]).getTime()
-                this.$emit('input', date)
+                let date = new Date(this.active[0], this.active[1] - 1, this.active[2]).getTime();
+                this.$emit('input', date);
                 this.show = false
             }
         }
