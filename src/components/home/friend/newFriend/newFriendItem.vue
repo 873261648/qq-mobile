@@ -1,7 +1,7 @@
 <template>
     <div class="new_friend_item" @click="$emit('click',data)">
         <div class="info">
-            <img :src="data.friendInfo.avatar" alt="img">
+            <img :src="data.friendInfo.avatar" alt="">
             <div class="text">
                 <p class="nickname" v-html="data.friendInfo.nickname"></p>
                 <p class="message" v-html="data.message"></p>
@@ -11,8 +11,7 @@
             <p v-if="data.status === 1">已同意</p>
             <p v-else-if="data.status === 0">已拒绝</p>
             <p v-else-if="this.userInfo.qq === data.user_id">等待验证</p>
-<!--            v-else-if="this.userInfo.qq === data.friend_id"-->
-            <button  @click="$emit('agree',data)">同意</button>
+            <button v-else-if="this.userInfo.qq === data.friend_id" @click="$emit('agree',data)">同意</button>
         </div>
     </div>
 </template>
@@ -22,7 +21,7 @@
         name: 'newFriendItem',
         props: ['data'],
         computed: {
-            userInfo () {
+            userInfo() {
                 return this.$store.getters.userInfo
             }
         }
