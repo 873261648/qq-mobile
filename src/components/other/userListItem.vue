@@ -3,11 +3,12 @@
         <img :src="item.avatar" alt="img">
         <div class="info">
             <div class="top">
-                <span class="nickname">{{item.nickname}}</span>
-                <span class="qq">（{{item.qq}}）</span>
+                <slot name="top">
+                    <span class="qq">{{item.qq}}</span>
+                </slot>
             </div>
             <div class="bottom">
-
+                <slot name="bottom"></slot>
             </div>
         </div>
     </li>
@@ -27,30 +28,24 @@
         align-content center
         padding 10px 20px
 
-        & + li {
-            border-top 1px solid #dee0df
-        }
+
 
         img {
             width 60px
             height 60px
             object-fit cover
             border-radius 100px
+            flex-shrink 0
         }
 
         .info {
+            display flex
+            flex-direction column
+            justify-content space-between
             padding-left 10px
 
             .top {
                 font-size 16px
-
-                .qq {
-                    color #808080
-                }
-
-                .nickname {
-                    color #00a5df
-                }
             }
         }
     }

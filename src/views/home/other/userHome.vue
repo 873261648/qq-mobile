@@ -64,7 +64,9 @@
                 return this.$store.getters.userInfo
             },
             relation () {
-                return Number(this.qq) === this.userInfo.qq ? 'self' : 'stranger'
+                if (Number(this.qq) === this.userInfo.qq) return 'self'
+                if (this.hisInfo.areYouFriends) return 'friend'
+                return 'stranger'
             },
             homeBgUrl () {
                 return this.hisInfo.home_bg || require('@/assets/img/defaule_home_bg.png')

@@ -11,9 +11,16 @@
         <div class="content">
             <ul class="tab" :style="{left:tabLeft+'px'}" ref="tab" @touchmove="touchMove" @touchstart="touchStart">
                 <li class="bg" :style="style"></li>
-                <li v-for="item of tab" :class="{active:item === active}" :key="item" :ref="item" v-html="item"
+                <li v-for="item of tab"
+                    :class="{active:item.value === active}"
+                    :key="item.value"
+                    :ref="item.value"
+                    v-html="item.label"
                     @click="switchTab(item)"></li>
             </ul>
+            <keep-alive>
+                <component :is="active" :friendList="friendList"></component>
+            </keep-alive>
         </div>
     </div>
 </template>
@@ -22,13 +29,27 @@
     import AppHeader from '../../components/AppHeader'
     import SearchBar from '../../components/base/searchBar'
 
+    import TheBuddy from '../../components/home/friend/theBuddy'
+    import TheGroup from '../../components/home/friend/theGroup'
+    import TheGroupChat from '../../components/home/friend/theGroupChat'
+    import TheDevice from '../../components/home/friend/theDevice'
+    import TheAddressBook from '../../components/home/friend/theAddressBook'
+    import ThePublic from '../../components/home/friend/thePublic'
+
     export default {
         name: 'friend',
-        components: { SearchBar, AppHeader },
+        components: { ThePublic, TheAddressBook, TheGroupChat, TheGroup, TheBuddy, TheDevice, SearchBar, AppHeader },
         data () {
             return {
-                active: '好友',
-                tab: ['好友', '分组', '群聊', '设备', '通讯录', '公众号'],
+                active: 'theBuddy',
+                tab: [
+                    { label: '好友', value: 'theBuddy' },
+                    { label: '分组', value: 'theGroup' },
+                    { label: '群聊', value: 'theGroupChat' },
+                    { label: '设备', value: 'theDevice' },
+                    { label: '通讯录', value: 'theAddressBook' },
+                    { label: '公众号', value: 'thePublic' }
+                ],
                 friendList: [],
                 startPosition: 0,
                 tabLeft: 0,
@@ -50,21 +71,21 @@
             this.getFriend()
         },
         methods: {
-            switchTab (item) {
-                this.active = item
+            switchTab ({ value }) {
+                this.active = value
             },
             touchStart (e) {
                 this.startPosition = e.touches[0].clientX
             },
             touchMove (e) {
                 // 规定一下滑动范围，如果已经在最左侧或最右侧就不再执行了
-                let tabWidth = this.$refs.tab.clientWidth;
-                let screenWidth = window.innerWidth;
-                let tabLeft = this.tabLeft - (this.startPosition - e.touches[0].clientX);
-                if (tabLeft <= 0 && tabLeft >= -(tabWidth- screenWidth)) {
-                    this.tabLeft = tabLeft;
+                let tabWidth = this.$refs.tab.clientWidth
+                let screenWidth = window.innerWidth
+                let tabLeft = this.tabLeft - (this.startPosition - e.touches[0].clientX)
+                if (tabLeft <= 0 && tabLeft >= -(tabWidth - screenWidth)) {
+                    this.tabLeft = tabLeft
                 }
-                this.startPosition = e.touches[0].clientX;
+                this.startPosition = e.touches[0].clientX
             },
             async getFriend () {
                 let res = await this.$axios.get('/api/friend/allfriend')
@@ -95,7 +116,8 @@
             &:active {
                 background-color: #f1f1f9
             }
-            .icon{
+
+            .icon {
                 color #888c98
                 font-size 12px
             }
