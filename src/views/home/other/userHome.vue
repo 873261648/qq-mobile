@@ -114,7 +114,10 @@
             goChartRoom () {
                 this.$router.push({
                     name: '聊天室',
-                    query: this.friendInfo
+                    query: {
+                        target: this.friendInfo.qq,
+                        type: 'friend'
+                    }
                 })
             },
             editData () {

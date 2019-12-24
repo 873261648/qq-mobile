@@ -1,6 +1,6 @@
 <template>
     <div id="chat">
-        <app-header back :name="this.friendInfo.nickname">
+        <app-header back :name="name">
             <span class="icon icon-menu"></span>
         </app-header>
         <ul class="message_list">
@@ -32,48 +32,54 @@
         data () {
             return {
                 newMessage: '',
-                messageList: [{
-                    id: 1,
-                    target: 100000,
-                    sender: 100001,
-                    time: Date.now(),
-                    message: '卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？卢克去吗？',
-                    avatar: '\\upload\\upload_9c32b175e69fe2556f7f733f59985a4b.jpg',
-                }, {
-                    id: 2,
-                    target: 100001,
-                    sender: 100000,
-                    time: Date.now(),
-                    message: '去',
-                    avatar: '\\upload\\upload_5b5bf26ef887dfc8e762d650d7647e51.jpg',
-                }, {
-                    id: 3,
-                    target: 100000,
-                    sender: 100001,
-                    time: Date.now(),
-                    message: '你上啥',
-                    avatar: '\\upload\\upload_9c32b175e69fe2556f7f733f59985a4b.jpg',
-                }, {
-                    id: 4,
-                    target: 100001,
-                    sender: 100000,
-                    time: Date.now(),
-                    message: '我上我的黑铁奶爸',
-                    avatar: '\\upload\\upload_5b5bf26ef887dfc8e762d650d7647e51.jpg',
-                }]
+                friendInfo: {},
+                groupInfo: {},
+                messageList: []
             }
         },
         computed: {
-            friendInfo () {
-                return this.$route.query
+            userInfo () {
+                return this.$store.getters.userInfo
+            },
+            friendOrGroup () {
+                return Number(this.$route.query.target)
+            },
+            type () {
+                return this.$route.query.type
+            },
+            name () {
+                if (this.type === 'friend') {
+                    return this.friendInfo.remark || this.friendInfo.nickname
+                }
+                return this.friendInfo.groupName
             },
             disabledSend () {
                 return this.newMessage === ''
             }
         },
+        created () {
+            this.getInfo()
+        },
         methods: {
+            async getInfo () {
+                let res
+                if (this.type === 'friend') {
+                    res = await this.$axios.get(`/api/user/info?qq=${this.friendOrGroup}`)
+                    this.friendInfo = res.data.result
+                }
+            },
             send () {
-
+                let newMessage = {
+                    id: Date.now(),
+                    sender: this.userInfo.qq,
+                    target: this.friendOrGroup,
+                    time: Date.now(),
+                    message: this.newMessage,
+                    avatar: this.userInfo.avatar,
+                }
+                this.$socket.send(JSON.stringify(newMessage))
+                this.messageList.push(newMessage)
+                this.newMessage = ''
             }
         }
     }
@@ -84,6 +90,7 @@
         padding-top 50px
         background-color: #eaedf4
         min-height 100vh
+        padding-bottom 93px
 
         .bottom {
             position fixed

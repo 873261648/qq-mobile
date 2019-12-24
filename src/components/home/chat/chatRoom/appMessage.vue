@@ -29,28 +29,47 @@
         align-items flex-start
         padding 0 20px
         margin-top 20px
-        img{
+
+        img {
             width 40px
             height 40px
             object-fit cover
             border-radius 100px
         }
-        .message{
+
+        .message {
+            position relative
             max-width calc(80vw - 50px)
             background-color: #fff
             border-radius 4px
             padding 10px
             line-height 1.5em
-        }
 
-        &.you{
-            .message{
-                margin-left 10px
+            &:after {
+                content ''
+                position absolute
+                border 6px solid transparent
+                border-left-color: #1fbafc;
+                top 14px
+                right -12px
             }
         }
-        &.me{
+
+        &.you {
+            .message {
+                margin-left 10px
+                &:after {
+                    border 6px solid transparent
+                    border-right-color: #fff;
+                    right auto
+                    left -12px
+                }
+            }
+        }
+        &.me {
             flex-direction row-reverse
-            .message{
+
+            .message {
                 margin-right 10px
                 background-color: #1fbafc
                 color #fff
