@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from './store'
 import router from './router'
-import Axios from 'axios';
+import Axios from './http/axios';
 
 import './registerServiceWorker'
 import './units/baseComponent';

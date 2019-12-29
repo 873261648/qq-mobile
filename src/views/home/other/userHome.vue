@@ -1,7 +1,7 @@
 <template>
     <div class="user_home">
         <div class="header">
-            <span class="icon icon-left" @click="$router.back()"></span>
+            <span class="icon icon-left" @click="$router.goBack()"></span>
             <div class="name" :style="{opacity:headerOpacity}">个人主页</div>
             <div class="right">设置</div>
         </div>

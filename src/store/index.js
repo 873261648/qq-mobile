@@ -6,14 +6,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         userInfo: {},
-        newMessage: {}
+        message: {}
     },
     getters: {
         userInfo (state) {
             return state.userInfo
         },
-        newMessage () {
-            return state.newMessage
+        message (state) {
+            return state.message
         }
     },
     mutations: {
@@ -23,8 +23,8 @@ export default new Vuex.Store({
                 ...val
             }
         },
-        newMessage (state, val) {
-            state.newMessage = val
+        message (state, val) {
+            state.message = val
         }
     },
     modules: {}

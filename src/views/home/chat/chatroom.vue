@@ -8,7 +8,7 @@
         </ul>
         <div class="bottom">
             <div class="input">
-                <input type="text" v-model="newMessage">
+                <input type="text" v-model="text">
                 <button :disabled="disabledSend" @click="send">发送</button>
             </div>
             <div class="icons">
@@ -31,7 +31,7 @@
         components: { AppMessage },
         data () {
             return {
-                newMessage: '',
+                text: '',
                 friendInfo: {},
                 groupInfo: {},
                 messageList: []
@@ -54,7 +54,15 @@
                 return this.friendInfo.groupName
             },
             disabledSend () {
-                return this.newMessage === ''
+                return this.text === ''
+            },
+            message(){
+                return this.$store.getters.message
+            }
+        },
+        watch:{
+            message(val){
+                this.newMessage(val)
             }
         },
         created () {
@@ -70,16 +78,21 @@
             },
             send () {
                 let newMessage = {
+                    cmd:"message",
                     id: Date.now(),
                     sender: this.userInfo.qq,
                     target: this.friendOrGroup,
                     time: Date.now(),
-                    message: this.newMessage,
+                    message: this.text,
                     avatar: this.userInfo.avatar,
                 }
                 this.$socket.send(JSON.stringify(newMessage))
                 this.messageList.push(newMessage)
-                this.newMessage = ''
+                this.text = ''
+            },
+            newMessage(val){
+                if(!val.cmd === 'message') return
+                this.messageList.push(val);
             }
         }
     }

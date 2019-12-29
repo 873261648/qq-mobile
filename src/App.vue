@@ -14,9 +14,13 @@
         },
         watch: {
             '$route' (to, from) {
-                const toDepth = to.path.split('/').length
-                const fromDepth = from.path.split('/').length
-                this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+                let isBack = this.$router.isBack  //  监听路由变化时的状态为前进还是后退
+                if(isBack) {
+                    this.transitionName = 'slide-right'
+                } else {
+                    this.transitionName = 'slide-left'
+                }
+                this.$router.isBack = false
             }
         },
         async created () {

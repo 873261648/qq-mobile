@@ -27,19 +27,19 @@
 <script>
     export default {
         name: 'login',
-        data() {
+        data () {
             return {
                 qq: '',
                 password: ''
             }
         },
-        created() {
+        created () {
             if (this.$route.params.qq) {
                 this.qq = this.$route.params.qq
             }
         },
         methods: {
-            async login() {
+            async login () {
                 let res = await this.$axios({
                     method: 'POST',
                     url: '/api/user/login',
@@ -47,14 +47,14 @@
                         qq: this.qq,
                         password: this.password
                     }
-                });
+                })
                 if (res.data.errno !== 0) {
-                    this.$message.error('账号或密码错误！');
+                    this.$message.error('账号或密码错误！')
                     return
                 }
-                sessionStorage.setItem('qq', JSON.stringify(res.data.result.qq));
+                sessionStorage.setItem('qq', JSON.stringify(res.data.result.qq))
                 this.$store.commit('userInfo', res.data.result)
-                this.$router.push('/home')
+                await this.$router.push('/home')
             }
         }
     }
