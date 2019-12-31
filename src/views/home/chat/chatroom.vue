@@ -54,14 +54,14 @@
                 return this.friendInfo.groupName
             },
             disabledSend () {
-                return this.text === ''
+                return this.text.trim() === ''
             },
-            message(){
+            message () {
                 return this.$store.getters.message
             }
         },
-        watch:{
-            message(val){
+        watch: {
+            message (val) {
                 this.newMessage(val)
             }
         },
@@ -78,21 +78,22 @@
             },
             send () {
                 let newMessage = {
-                    cmd:"message",
+                    cmd: 'message',
                     id: Date.now(),
                     sender: this.userInfo.qq,
                     target: this.friendOrGroup,
                     time: Date.now(),
                     message: this.text,
                     avatar: this.userInfo.avatar,
+                    name:this.name
                 }
                 this.$socket.send(JSON.stringify(newMessage))
                 this.messageList.push(newMessage)
                 this.text = ''
             },
-            newMessage(val){
-                if(!val.cmd === 'message') return
-                this.messageList.push(val);
+            newMessage (val) {
+                if (val.cmd !== 'message') return
+                this.messageList.push(val)
             }
         }
     }

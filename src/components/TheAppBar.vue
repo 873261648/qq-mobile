@@ -19,7 +19,7 @@
                     name: '消息',
                     componentName: 'Chat',
                     icon: 'icon-comment',
-                    badge: 991
+                    badge: 0
                 }, {
                     name: '联系人',
                     componentName: 'Friend',
@@ -31,6 +31,16 @@
                     icon: 'icon-star',
                     badge: 0
                 }]
+            }
+        },
+        computed: {
+            message () {
+                return this.$store.getters.message
+            }
+        },
+        watch: {
+            message (newMessage) {
+                this.newMessage(newMessage)
             }
         },
         filters: {
@@ -55,6 +65,13 @@
                 this.active = componentName
                 this.$emit('select', componentName)
                 sessionStorage.setItem('homeActive', componentName)
+            },
+            newMessage (newMessage) {
+                switch (newMessage.cmd) {
+                    case 'message':
+                        this.barData[0].badge++
+                        break
+                }
             }
         }
     }

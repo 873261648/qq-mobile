@@ -2,14 +2,17 @@
     <li @click="$emit('click',item)">
         <img :src="item.avatar" alt="img">
         <div class="info">
-            <div class="top">
-                <slot name="top">
-                    <span class="qq">{{item.qq}}</span>
-                </slot>
+            <div class="left">
+                <div class="top">
+                    <slot name="top">
+                        <span class="qq">{{item.qq}}</span>
+                    </slot>
+                </div>
+                <div class="bottom">
+                    <slot name="bottom"></slot>
+                </div>
             </div>
-            <div class="bottom">
-                <slot name="bottom"></slot>
-            </div>
+            <slot name="right"></slot>
         </div>
     </li>
 </template>
@@ -28,8 +31,6 @@
         align-content center
         padding 10px 20px
 
-
-
         img {
             width 60px
             height 60px
@@ -40,9 +41,16 @@
 
         .info {
             display flex
-            flex-direction column
+            align-items center
             justify-content space-between
-            padding-left 10px
+            width calc(100% - 60px)
+
+            .left {
+                display flex
+                flex-direction column
+                justify-content space-between
+                padding-left 10px
+            }
 
             .top {
                 font-size 16px
