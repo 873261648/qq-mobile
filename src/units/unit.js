@@ -40,7 +40,7 @@ function timeFormat (date) {
     if (typeof date !== 'number') return '';
     date = new Date(date);
     let today = new Date().getDate();
-    if (date.getDate() === today) return `${fill0(date.getHours())}:${fill0(date.getMonth())}`;
+    if (date.getDate() === today) return `${fill0(date.getHours())}:${fill0(date.getMinutes())}`;
     if (today - date.getDate() === 1) return '昨天';
     if (today - date.getDate() === 2) return '前天';
     return `${fill0(date.getFullYear())}-${fill0(date.getMonth() + 1)}-${fill0(date.getDate() + 1)}`;

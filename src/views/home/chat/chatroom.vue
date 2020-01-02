@@ -67,6 +67,7 @@
         },
         created () {
             this.getInfo()
+            this.getChatRecord()
         },
         methods: {
             async getInfo () {
@@ -74,6 +75,18 @@
                 if (this.type === 'friend') {
                     res = await this.$axios.get(`/api/user/info?qq=${this.friendOrGroup}`)
                     this.friendInfo = res.data.result
+                }
+            },
+            async getChatRecord () {
+                let res
+                if (this.type === 'friend') {
+                    res = await this.$axios({
+                        url: '/api/record/list',
+                        params: {
+                            qq: this.friendOrGroup
+                        }
+                    })
+                    this.messageList = res.data.result
                 }
             },
             send () {
@@ -85,7 +98,7 @@
                     time: Date.now(),
                     message: this.text,
                     avatar: this.userInfo.avatar,
-                    name:this.name
+                    name: this.name
                 }
                 this.$socket.send(JSON.stringify(newMessage))
                 this.messageList.push(newMessage)

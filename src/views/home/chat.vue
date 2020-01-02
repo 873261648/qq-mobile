@@ -5,12 +5,13 @@
         </app-header>
         <search-bar/>
         <ul class="session_list">
-            <user-list-item v-for="item of sessionList" :key="item.id" :item="item" @click="enterChatRoom(item.qq)">
+            <user-list-item v-for="item of conversationList" :key="item.id" :item="item"
+                            @click="enterChatRoom(item.target)">
                 <template v-slot:top>
-                    <p class="name" v-html="item.remark || item.nickname"></p>
+                    <p class="name" v-html="item.name"></p>
                 </template>
                 <template v-slot:bottom>
-                    <p class="message" v-html="item.lastmessage"></p>
+                    <p class="message" v-html="item.last_message"></p>
                 </template>
                 <template v-slot:right>
                     <div class="right">
@@ -34,39 +35,7 @@
         components: { UserListItem, SearchBar, AppHeader },
         data () {
             return {
-                sessionList: [{
-                    id:1,
-                    qq: 100001,
-                    remark: '大白菜',
-                    avatar: '\\upload\\upload_4386dee279e3c797b079cc8a35c08252.jpg',
-                    lastmessage: '打鸟贝去不去？',
-                    time: 1577803453000,
-                    num: 3
-                },{
-                    id:2,
-                    qq: 100001,
-                    remark: '大白菜',
-                    avatar: '\\upload\\upload_4386dee279e3c797b079cc8a35c08252.jpg',
-                    lastmessage: '打鸟贝去不去？',
-                    time: 1577717052000,
-                    num: 33
-                },{
-                    id:3,
-                    qq: 100001,
-                    remark: '大白菜',
-                    avatar: '\\upload\\upload_4386dee279e3c797b079cc8a35c08252.jpg',
-                    lastmessage: '打鸟贝去不去？',
-                    time: 1577630652000,
-                    num: 333
-                },{
-                    id:4,
-                    qq: 100001,
-                    remark: '大白菜',
-                    avatar: '\\upload\\upload_4386dee279e3c797b079cc8a35c08252.jpg',
-                    lastmessage: '打鸟贝去不去？',
-                    time: 1575989052000,
-                    num: 333
-                }]
+                conversationList: []
             }
         },
         filters: {
@@ -77,12 +46,19 @@
                 return num < 100 ? num : '99+'
             }
         },
+        created(){
+            this.getConversationList();
+        },
         methods: {
-            enterChatRoom (qq) {
+            async getConversationList () {
+                let res = await this.$axios.get('/api/conversation/list')
+                this.conversationList = res.data.result
+            },
+            enterChatRoom (target) {
                 this.$router.push({
                     name: '聊天室',
                     query: {
-                        target: qq,
+                        target,
                         type: 'friend'
                     }
                 })
