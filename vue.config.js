@@ -1,6 +1,5 @@
 // const mock = require('./src/mock/index.js');
 
-// const url = "http://it.sucheon.com:8088";
 const url = "http://localhost:3000";
 
 const apis = ['api', 'upload'],

@@ -53,7 +53,7 @@
                     return
                 }
                 sessionStorage.setItem('qq', JSON.stringify(res.data.result.qq));
-                this.$store.commit('userInfo', res.data.result)
+                this.$store.commit('userInfo', res.data.result);
                 this.$router.push('/home')
             }
         }
