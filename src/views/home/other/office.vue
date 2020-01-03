@@ -41,7 +41,7 @@
                         office: tag
                     }
                 })
-                this.$router.back()
+                this.$router.goBack()
             }
         }
     }

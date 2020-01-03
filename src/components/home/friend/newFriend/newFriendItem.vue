@@ -4,7 +4,8 @@
             <img :src="data.friendInfo.avatar" alt="">
             <div class="text">
                 <p class="nickname" v-html="data.friendInfo.nickname"></p>
-                <p class="message" v-html="data.message"></p>
+                <p class="message" v-if="this.userInfo.qq === data.user_id">已发送验证信息</p>
+                <p class="message" v-else v-html="data.message"></p>
             </div>
         </div>
         <div class="status">
@@ -21,7 +22,7 @@
         name: 'newFriendItem',
         props: ['data'],
         computed: {
-            userInfo() {
+            userInfo () {
                 return this.$store.getters.userInfo
             }
         }

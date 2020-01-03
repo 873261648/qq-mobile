@@ -1,32 +1,32 @@
 <template>
     <div class="user_home">
         <div class="header">
-            <span class="icon icon-left" @click="$router.back()"></span>
+            <span class="icon icon-left" @click="$router.goBack()"></span>
             <div class="name" :style="{opacity:headerOpacity}">个人主页</div>
             <div class="right">设置</div>
         </div>
         <input v-show="false" type="file" accept="image/*" :multiple="false" ref="inputFile" @change="updateHomeBG">
         <img class="home_bg" :src="homeBgUrl" alt="" @click="openFileWindow">
         <div class="info">
-            <img :src="hisInfo.avatar" alt="">
+            <img :src="friendInfo.avatar" alt="">
             <div class="text">
                 <div class="top">
-                    <p v-html="hisInfo.nickname"></p>
+                    <p v-html="friendInfo.nickname"></p>
                 </div>
                 <div class="bottom">
-                    <p>QQ：{{hisInfo.qq}}</p>
+                    <p>QQ：{{friendInfo.qq}}</p>
                     <p>
-                        <span v-html="hisInfo.gender"></span>
-                        <span v-html="hisInfo.hometown"></span>
+                        <span v-html="friendInfo.gender"></span>
+                        <span v-html="friendInfo.hometown"></span>
                         <span v-html="constellation"></span>
                     </p>
                 </div>
             </div>
         </div>
-        <user-info-item v-if="hisInfo.introduction" left-icon="icon-edit-fill">
-            <p v-html="hisInfo.introduction"></p>
+        <user-info-item v-if="friendInfo.introduction" left-icon="icon-edit-fill">
+            <p v-html="friendInfo.introduction"></p>
         </user-info-item>
-        <user-info-item v-if="hisInfo.birthday" left-icon="icon-smile">
+        <user-info-item v-if="friendInfo.birthday" left-icon="icon-smile">
             <p v-html="age"></p>
         </user-info-item>
         <user-info-item left-icon="icon-crown">
@@ -34,7 +34,7 @@
         </user-info-item>
         <div class="bottom">
             <button v-if="relation === 'stranger'" @click="goSendVerify">加为好友</button>
-            <button v-if="relation === 'friend'" class="primary">发送消息</button>
+            <button v-if="relation === 'friend'" class="primary" @click="goChartRoom">发送消息</button>
             <button v-if="relation === 'self'" @click="editData">编辑资料</button>
         </div>
     </div>
@@ -52,7 +52,7 @@
         },
         data () {
             return {
-                hisInfo: {},
+                friendInfo: {},
                 headerOpacity: window.scrollY < 200 ? '0' : '1'
             }
         },
@@ -64,23 +64,25 @@
                 return this.$store.getters.userInfo
             },
             relation () {
-                return Number(this.qq) === this.userInfo.qq ? 'self' : 'stranger'
+                if (Number(this.qq) === this.userInfo.qq) return 'self'
+                if (this.friendInfo.areYouFriends) return 'friend'
+                return 'stranger'
             },
             homeBgUrl () {
-                return this.hisInfo.home_bg || require('@/assets/img/defaule_home_bg.png')
+                return this.friendInfo.home_bg || require('@/assets/img/defaule_home_bg.png')
             },
             age () {
-                if (!this.hisInfo.birthday || this.hisInfo.birthday === '保密') return ''
-                let year = new Date(this.hisInfo.birthday).getFullYear()
+                if (!this.friendInfo.birthday || this.friendInfo.birthday === '保密') return ''
+                let year = new Date(this.friendInfo.birthday).getFullYear()
                 return new Date().getFullYear() - year + '岁'
             },
             constellation () {
-                if (!this.hisInfo.birthday) {
+                if (!this.friendInfo.birthday) {
                     return ''
                 }
 
-                let day = new Date(this.hisInfo.birthday).getDate()
-                let month = new Date(this.hisInfo.birthday).getMonth() + 1
+                let day = new Date(this.friendInfo.birthday).getDate()
+                let month = new Date(this.friendInfo.birthday).getMonth() + 1
 
                 let astro = ['摩羯座', '水瓶座', '双鱼座', '白羊座', '金牛座',
                     '双子座', '巨蟹座', '狮子座', '处女座', '天秤座', '天蝎座', '射手座', '摩羯座']
@@ -101,12 +103,21 @@
         methods: {
             async getUserInfo () {
                 let res = await this.$axios.get(`/api/user/info?qq=${this.qq}`)
-                this.hisInfo = res.data.result
+                this.friendInfo = res.data.result
             },
             goSendVerify () {
                 this.$router.push({
                     name: '发送验证',
-                    query: this.hisInfo
+                    query: this.friendInfo
+                })
+            },
+            goChartRoom () {
+                this.$router.push({
+                    name: '聊天室',
+                    query: {
+                        target: this.friendInfo.qq,
+                        type: 'friend'
+                    }
                 })
             },
             editData () {
@@ -127,7 +138,7 @@
                     headers: { 'content-Type': 'multipart/form-data;charset=UTF-8' },
                     data: form
                 })
-                this.hisInfo.home_bg = res.data.result.home_bg
+                this.friendInfo.home_bg = res.data.result.home_bg
             }
         }
     }

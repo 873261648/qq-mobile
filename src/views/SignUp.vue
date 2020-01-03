@@ -1,7 +1,7 @@
 <template>
     <div id="sign_up">
         <base-progress :number="number" :width="5"></base-progress>
-        <div class="icon icon-left" @touchstart="$router.back()"></div>
+        <div class="icon icon-left" @touchstart="$router.goBack()"></div>
         <transition :name="transitionName">
             <router-view/>
         </transition>
@@ -44,7 +44,7 @@
         },
         methods: {
             back() {
-                this.$router.back()
+                this.$router.goBack()
             }
         }
     }

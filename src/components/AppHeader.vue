@@ -1,10 +1,10 @@
 <template>
     <div id="header">
-        <div class="left" v-if="back" @click="$router.back()">
+        <div class="left" v-if="back" @click="$router.goBack()">
             <span class="icon icon-left"></span>
         </div>
         <div class="left avatar" v-else>
-            <img :src="userInfo.avatar" alt="avatar">
+            <img :src="userInfo.avatar" alt="">
         </div>
         <div class="name" v-html="name"></div>
         <div class="right">

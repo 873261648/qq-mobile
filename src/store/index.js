@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        userInfo: {}
+        userInfo: {},
+        message: {}
     },
     getters: {
         userInfo (state) {
             return state.userInfo
+        },
+        message (state) {
+            return state.message
         }
     },
     mutations: {
@@ -18,6 +22,9 @@ export default new Vuex.Store({
                 ...state.userInfo,
                 ...val
             }
+        },
+        message (state, val) {
+            state.message = val
         }
     },
     modules: {}
