@@ -50,6 +50,8 @@
                 flex-direction column
                 justify-content space-between
                 padding-left 10px
+                width calc(100vw - 160px)
+
             }
 
             .top {

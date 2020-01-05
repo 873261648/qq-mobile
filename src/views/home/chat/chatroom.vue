@@ -65,7 +65,7 @@
                 this.newMessage(val)
             }
         },
-        created () {
+        mounted(){
             this.getInfo()
             this.getChatRecord()
         },
@@ -87,6 +87,11 @@
                         }
                     })
                     this.messageList = res.data.result
+                    this.$nextTick(() => {
+                        window.scrollTo({
+                            top: document.body.offsetHeight - window.innerHeight
+                        })
+                    })
                 }
             },
             send () {
@@ -97,12 +102,20 @@
                     target: this.friendOrGroup,
                     time: Date.now(),
                     message: this.text,
-                    avatar: this.userInfo.avatar,
-                    name: this.name
                 }
                 this.$socket.send(JSON.stringify(newMessage))
-                this.messageList.push(newMessage)
+                this.messageList.push({
+                    ...newMessage,
+                    name: this.userInfo.remark || this.userInfo.nickname,
+                    avatar: this.userInfo.avatar
+                })
                 this.text = ''
+                this.$nextTick(() => {
+                    window.scrollTo({
+                        top: document.body.offsetHeight - window.innerHeight,
+                        behavior: 'smooth'
+                    })
+                })
             },
             newMessage (val) {
                 if (val.cmd !== 'message') return

@@ -4,7 +4,7 @@
             <span class="plus icon icon-plus"></span>
         </app-header>
         <search-bar/>
-        <ul class="session_list">
+        <ul class="session_list" v-if="conversationList.length">
             <user-list-item v-for="item of conversationList" :key="item.id" :item="item"
                             @click="enterChatRoom(item.target)">
                 <template v-slot:top>
@@ -21,6 +21,10 @@
                 </template>
             </user-list-item>
         </ul>
+        <div class="empty" v-else>
+            <img src="@/assets/img/empty_chat.jpg">
+            <p>暂时没有新消息</p>
+        </div>
     </div>
 </template>
 
@@ -38,6 +42,16 @@
                 conversationList: []
             }
         },
+        computed: {
+            message () {
+                return this.$store.getters.message
+            }
+        },
+        watch: {
+            message (newMessage) {
+                this.newMessage(newMessage)
+            }
+        },
         filters: {
             timeFormat (date) {
                 return timeFormat(date)
@@ -46,8 +60,8 @@
                 return num < 100 ? num : '99+'
             }
         },
-        created(){
-            this.getConversationList();
+        created () {
+            this.getConversationList()
         },
         methods: {
             async getConversationList () {
@@ -62,6 +76,24 @@
                         type: 'friend'
                     }
                 })
+            },
+            newMessage (newMessage) {
+                if (newMessage.cmd !== 'message') return
+                if (newMessage.conversationID) {
+                    this.conversationList.unshift({
+                        ...newMessage,
+                        num: 1,
+                        id: newMessage.conversationID,
+                        last_message: newMessage.message
+                    })
+                    return
+                }
+                let current = this.conversationList.find(item => item.target === newMessage.sender || newMessage.target)
+                current = {
+                    ...current,
+                    num: current.num + 1,
+                    last_message: newMessage.message
+                }
             }
         }
     }
@@ -69,7 +101,7 @@
 
 <style lang="stylus" scoped>
     #chat {
-        padding-top 50px
+        padding 50px 0 0.1px
         background-color: #fff
 
         .plus {
@@ -80,6 +112,9 @@
         .session_list {
             .message {
                 color #878a99
+                white-space: nowrap
+                overflow: hidden
+                text-overflow ellipsis
             }
 
             .right {
@@ -104,6 +139,22 @@
                     background-color: #f74c32
                     flex-shrink 0
                 }
+            }
+        }
+
+        .empty {
+            height calc(100vh - 200px)
+            text-align center
+            color #a6a6a6
+            display flex
+            flex-direction column
+            justify-content center
+            align-items center
+            background-color: #f5f6fa
+
+            img {
+                width 100px
+                margin-bottom 20px
             }
         }
     }

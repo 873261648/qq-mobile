@@ -47,6 +47,9 @@
 
         .dynamic {
             color #888a96;
+            white-space: nowrap
+            overflow: hidden
+            text-overflow ellipsis
 
             span + span {
                 margin-left 10px

@@ -2,20 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login'
 
-const SignUp = () => import('../views/SignUp')
-const Phone = () => import('../views/signUp/phone')
-const Password = () => import('../views/signUp/password')
-const Done = () => import('../views/signUp/done')
+import SignUp from '../views/SignUp'
+import Phone from '../views/signUp/phone'
+import Password from '../views/signUp/password'
+import Done from '../views/signUp/done'
 
 import Home from '../views/Home'
 
-const Add = () => import('../views/home/friend/add')
-const SendVerify = () => import('../views/home/friend/sendVerify')
-const NewFriend = () => import('../views/home/friend/newFriend')
-const ChatRoom = () => import('../views/home/chat/chatroom')
-const userHome = () => import('../views/home/other/userHome')
-const editData = () => import('../views/home/other/editData')
-const Office = () => import('../views/home/other/office')
+import Add from '../views/home/friend/add'
+import SendVerify from '../views/home/friend/sendVerify'
+import NewFriend from '../views/home/friend/newFriend'
+import ChatRoom from '../views/home/chat/chatroom'
+import userHome from '../views/home/other/userHome'
+import editData from '../views/home/other/editData'
+import Office from '../views/home/other/office'
 
 Vue.use(VueRouter)
 
