@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         userInfo: {},
-        message: {}
+        message: {},
+        badge: {
+            chat: 0,
+            friend: 0,
+            dynamic: 0
+        }
     },
     getters: {
         userInfo (state) {
@@ -14,6 +19,9 @@ export default new Vuex.Store({
         },
         message (state) {
             return state.message
+        },
+        badge (state) {
+            return state.badge
         }
     },
     mutations: {
@@ -25,6 +33,12 @@ export default new Vuex.Store({
         },
         message (state, val) {
             state.message = val
+        },
+        badge (state, val) {
+            state.badge = {
+                ...state.badge,
+                ...val
+            }
         }
     },
     modules: {}

@@ -15,6 +15,8 @@
     import BaseMessage from '../components/base/message/Main'
     import TheAppBar from '../components/TheAppBar'
 
+    let newMessageAudio = require('@/assets/audio/newMessage.mp3')
+
     export default {
         name: 'home',
         components: {
@@ -26,12 +28,27 @@
         },
         data () {
             return {
-                componentName: 'Chat'
+                componentName: 'Chat',
+                messageAudio: new Audio(newMessageAudio)
+            }
+        },
+        computed: {
+            message () {
+                return this.$store.getters.message
+            }
+        },
+        watch: {
+            message (val) {
+                this.newMessage(val)
             }
         },
         methods: {
             selectBar (componentName) {
                 this.componentName = componentName
+            },
+            newMessage (val) {
+                if (val.cmd !== 'message') return
+                this.messageAudio.play()
             }
         }
     }

@@ -15,27 +15,37 @@
         data () {
             return {
                 active: 'Chat',
-                barData: [{
-                    name: '消息',
-                    componentName: 'Chat',
-                    icon: 'icon-comment',
-                    badge: 0
-                }, {
-                    name: '联系人',
-                    componentName: 'Friend',
-                    icon: 'icon-user',
-                    badge: 0
-                }, {
-                    name: '动态',
-                    componentName: 'Dynamic',
-                    icon: 'icon-star',
-                    badge: 0
-                }]
             }
         },
         computed: {
             message () {
                 return this.$store.getters.message
+            },
+            badge: {
+                get () {
+                    return this.$store.getters.badge
+                },
+                set (val) {
+                    this.$store.commit('badge', val)
+                }
+            },
+            barData () {
+                return [{
+                    name: '消息',
+                    componentName: 'Chat',
+                    icon: 'icon-comment',
+                    badge: this.badge.chat
+                }, {
+                    name: '联系人',
+                    componentName: 'Friend',
+                    icon: 'icon-user',
+                    badge: this.badge.friend
+                }, {
+                    name: '动态',
+                    componentName: 'Dynamic',
+                    icon: 'icon-star',
+                    badge: this.badge.dynamic
+                }]
             }
         },
         watch: {
@@ -69,7 +79,9 @@
             newMessage (newMessage) {
                 switch (newMessage.cmd) {
                     case 'message':
-                        this.barData[0].badge++
+                        this.badge = {
+                            chat: this.badge.chat + 1
+                        }
                         break
                 }
             }

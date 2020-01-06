@@ -110,7 +110,7 @@
             async updateUserInfo (data) {
                 await this.$axios({
                     method: 'POST',
-                    url: '/api/user/updateinfo',
+                    url: '/api/user/update_info',
                     data
                 })
                 this.userInfo = data

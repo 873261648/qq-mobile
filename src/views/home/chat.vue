@@ -6,7 +6,7 @@
         <search-bar/>
         <ul class="session_list" v-if="conversationList.length">
             <user-list-item v-for="item of conversationList" :key="item.id" :item="item"
-                            @click="enterChatRoom(item.target)">
+                            @click="enterChatRoom(item)">
                 <template v-slot:top>
                     <p class="name" v-html="item.name"></p>
                 </template>
@@ -16,7 +16,7 @@
                 <template v-slot:right>
                     <div class="right">
                         <span class="time">{{item.time|timeFormat}}</span>
-                        <span class="num">{{item.num|maxNum}}</span>
+                        <span class="num" v-show="item.num">{{item.num|maxNum}}</span>
                     </div>
                 </template>
             </user-list-item>
@@ -67,8 +67,19 @@
             async getConversationList () {
                 let res = await this.$axios.get('/api/conversation/list')
                 this.conversationList = res.data.result
+                let total = this.conversationList.reduce(a.num + b.num, this.conversationList[0].num)
+                this.$store.commit('badge', {
+                    chat: total
+                })
             },
-            enterChatRoom (target) {
+            enterChatRoom ({ target, id }) {
+                this.$axios({
+                    method: 'POST',
+                    url: '/api/conversation/clear_unread',
+                    data: {
+                        id
+                    }
+                })
                 this.$router.push({
                     name: '聊天室',
                     query: {
@@ -88,12 +99,16 @@
                     })
                     return
                 }
-                let current = this.conversationList.find(item => item.target === newMessage.sender || newMessage.target)
-                current = {
+
+                let index = this.conversationList.findIndex(item => item.target === newMessage.sender)
+                let current = this.conversationList[index]
+                let newConversation = {
                     ...current,
                     num: current.num + 1,
                     last_message: newMessage.message
                 }
+                this.conversationList.splice(index, 1)
+                this.conversationList.unshift(newConversation)
             }
         }
     }

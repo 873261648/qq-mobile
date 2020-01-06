@@ -1,5 +1,5 @@
 <template>
-    <div id="chat">
+    <div id="chat" ref="chat">
         <app-header back :name="name">
             <span class="icon icon-menu"></span>
         </app-header>
@@ -9,7 +9,7 @@
         <div class="bottom">
             <div class="input">
                 <input type="text" v-model="text">
-                <button :disabled="disabledSend" @click="send">发送</button>
+                <button :disabled="disabledSend" @click="send" @mousedown="handlerMouseDown">发送</button>
             </div>
             <div class="icons">
                 <span class="icon icon-audio-fill"></span>
@@ -65,9 +65,10 @@
                 this.newMessage(val)
             }
         },
-        mounted(){
+        mounted () {
             this.getInfo()
             this.getChatRecord()
+            window.addEventListener('resize', this.scrollBottom)
         },
         methods: {
             async getInfo () {
@@ -87,12 +88,18 @@
                         }
                     })
                     this.messageList = res.data.result
-                    this.$nextTick(() => {
-                        window.scrollTo({
-                            top: document.body.offsetHeight - window.innerHeight
-                        })
-                    })
+                    this.$nextTick(this.scrollBottom)
                 }
+            },
+            scrollBottom (smooth) {
+                window.scrollTo({
+                    top: document.body.offsetHeight - window.innerHeight,
+                    behavior: smooth ? 'smooth' : 'instant'
+                })
+            },
+            // 阻止点击按钮时表单失去焦点导致输入法隐藏
+            handlerMouseDown (e) {
+                e.preventDefault()
             },
             send () {
                 let newMessage = {
@@ -111,15 +118,15 @@
                 })
                 this.text = ''
                 this.$nextTick(() => {
-                    window.scrollTo({
-                        top: document.body.offsetHeight - window.innerHeight,
-                        behavior: 'smooth'
-                    })
+                    this.scrollBottom(true)
                 })
             },
             newMessage (val) {
                 if (val.cmd !== 'message') return
                 this.messageList.push(val)
+                this.$nextTick(() => {
+                    this.scrollBottom(true)
+                })
             }
         }
     }
@@ -129,7 +136,6 @@
     #chat {
         padding-top 50px
         background-color: #eaedf4
-        min-height 100vh
         padding-bottom 93px
 
         .bottom {
