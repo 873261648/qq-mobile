@@ -70,6 +70,9 @@
             this.getChatRecord()
             window.addEventListener('resize', this.scrollBottom)
         },
+        beforeDestroy () {
+            window.removeEventListener('resize', this.scrollBottom)
+        },
         methods: {
             async getInfo () {
                 let res
@@ -137,6 +140,7 @@
         padding-top 50px
         background-color: #eaedf4
         padding-bottom 93px
+        min-height 100vh
 
         .bottom {
             position fixed

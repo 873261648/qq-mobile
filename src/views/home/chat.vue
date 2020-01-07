@@ -19,6 +19,11 @@
                         <span class="num" v-show="item.num">{{item.num|maxNum}}</span>
                     </div>
                 </template>
+                <template v-slot:menu>
+                    <button class="gray">置顶</button>
+                    <button class="yellow">标记未读</button>
+                    <button class="red">删除</button>
+                </template>
             </user-list-item>
         </ul>
         <div class="empty" v-else>
@@ -67,7 +72,7 @@
             async getConversationList () {
                 let res = await this.$axios.get('/api/conversation/list')
                 this.conversationList = res.data.result
-                let total = this.conversationList.reduce(a.num + b.num, this.conversationList[0].num)
+                let total = this.conversationList.reduce((a, b) => a.num + b.num, this.conversationList[0].num)
                 this.$store.commit('badge', {
                     chat: total
                 })
@@ -116,6 +121,8 @@
 
 <style lang="stylus" scoped>
     #chat {
+        width 100vw
+        overflow hidden
         padding 50px 0 0.1px
         background-color: #fff
 
@@ -154,6 +161,21 @@
                     background-color: #f74c32
                     flex-shrink 0
                 }
+            }
+            .gray{
+                background-color: #c8c7cd
+            }
+            .yellow{
+                background-color: #ff9c00
+            }
+            .red{
+                background-color: #ff3a31
+            }
+            .gray, .yellow, .red {
+                color #fff
+                border-radius 0
+                height 100%
+                padding 0 20px
             }
         }
 
