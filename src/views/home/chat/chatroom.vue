@@ -34,15 +34,13 @@
                 text: '',
                 friendInfo: {},
                 groupInfo: {},
-                messageList: []
+                messageList: [],
+                friendOrGroup:Number(this.$route.query.target)
             }
         },
         computed: {
             userInfo () {
                 return this.$store.getters.userInfo
-            },
-            friendOrGroup () {
-                return Number(this.$route.query.target)
             },
             type () {
                 return this.$route.query.type
@@ -71,6 +69,14 @@
             window.addEventListener('resize', this.scrollBottom)
         },
         beforeDestroy () {
+            // 清除未读消息并取消resize事件
+            this.$axios({
+                method: 'POST',
+                url: '/api/conversation/clear_unread',
+                data: {
+                    target: this.friendOrGroup
+                }
+            })
             window.removeEventListener('resize', this.scrollBottom)
         },
         methods: {

@@ -5,7 +5,7 @@
         </app-header>
         <search-bar/>
         <ul class="session_list" v-if="conversationList.length">
-            <user-list-item v-for="item of conversationList" :key="item.id" :item="item"
+            <user-list-item v-for="(item,index) of conversationList" :key="item.id" :item="item"
                             @click="enterChatRoom(item)">
                 <template v-slot:top>
                     <p class="name" v-html="item.name"></p>
@@ -20,9 +20,17 @@
                     </div>
                 </template>
                 <template v-slot:menu>
-                    <button class="gray">置顶</button>
-                    <button class="yellow">标记未读</button>
-                    <button class="red">删除</button>
+                    <button
+                        class="gray"
+                        v-html="item.sticky?'取消置顶':'置顶'"
+                        @click="sticky(item.id,!item.sticky)"
+                    ></button>
+                    <button
+                        class="yellow"
+                        v-html="item.num?'标记已读':'标记未读'"
+                        @click="isRead(item.id,!item.num)"
+                    ></button>
+                    <button class="red" @click="remove(item.id,index)">删除</button>
                 </template>
             </user-list-item>
         </ul>
@@ -50,11 +58,23 @@
         computed: {
             message () {
                 return this.$store.getters.message
+            },
+            total () {
+                let total = 0
+                this.conversationList.map(item => {
+                    total += item.num
+                })
+                return total
             }
         },
         watch: {
             message (newMessage) {
                 this.newMessage(newMessage)
+            },
+            total () {
+                this.$store.commit('badge', {
+                    chat: this.total
+                })
             }
         },
         filters: {
@@ -72,48 +92,47 @@
             async getConversationList () {
                 let res = await this.$axios.get('/api/conversation/list')
                 this.conversationList = res.data.result
-                let total = this.conversationList.reduce((a, b) => a.num + b.num, this.conversationList[0].num)
-                this.$store.commit('badge', {
-                    chat: total
-                })
             },
             enterChatRoom ({ target, id }) {
-                this.$axios({
-                    method: 'POST',
-                    url: '/api/conversation/clear_unread',
-                    data: {
-                        id
-                    }
-                })
                 this.$router.push({
                     name: '聊天室',
                     query: {
                         target,
-                        type: 'friend'
+                        type: 'friend',
+                        conversationID: id
                     }
                 })
             },
             newMessage (newMessage) {
-                if (newMessage.cmd !== 'message') return
-                if (newMessage.conversationID) {
-                    this.conversationList.unshift({
-                        ...newMessage,
-                        num: 1,
-                        id: newMessage.conversationID,
-                        last_message: newMessage.message
-                    })
-                    return
+                if (newMessage.cmd === 'message') {
+                    this.getConversationList()
                 }
-
-                let index = this.conversationList.findIndex(item => item.target === newMessage.sender)
-                let current = this.conversationList[index]
-                let newConversation = {
-                    ...current,
-                    num: current.num + 1,
-                    last_message: newMessage.message
-                }
+            },
+            remove (id, index) {
+                this.$axios({
+                    method: 'POST',
+                    url: '/api/conversation/remove',
+                    data: { id }
+                })
                 this.conversationList.splice(index, 1)
-                this.conversationList.unshift(newConversation)
+            },
+            sticky (id, sticky) {
+                this.$axios({
+                    method: 'POST',
+                    url: '/api/conversation/sticky',
+                    data: { id, sticky }
+                })
+                this.getConversationList()
+            },
+            // 标记未读已读功能也用清除未读这个方法，
+            // 本质上都是操作未读条数
+            isRead (id, isRead) {
+                this.$axios({
+                    method: 'POST',
+                    url: '/api/conversation/clear_unread',
+                    data: { id, isRead }
+                })
+                this.getConversationList()
             }
         }
     }
@@ -162,15 +181,19 @@
                     flex-shrink 0
                 }
             }
-            .gray{
+
+            .gray {
                 background-color: #c8c7cd
             }
-            .yellow{
+
+            .yellow {
                 background-color: #ff9c00
             }
-            .red{
+
+            .red {
                 background-color: #ff3a31
             }
+
             .gray, .yellow, .red {
                 color #fff
                 border-radius 0

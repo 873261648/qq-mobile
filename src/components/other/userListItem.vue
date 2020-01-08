@@ -36,9 +36,10 @@
         computed: {
             style () {
                 let transform = this.showMenu ? `translateX(${-this.$refs.menu.offsetWidth}px)` : `translateX(0px)`
-
+                let backgroundColor = this.item.sticky ? '#f5f6fa' : 'transparent'
                 return {
-                    transform
+                    transform,
+                    backgroundColor
                 }
             }
         },
@@ -46,7 +47,7 @@
             handlerClick () {
                 if (this.showMenu) {
                     this.showMenu = false
-                    return;
+                    return
                 }
                 this.$emit('click', this.item)
             },
@@ -58,11 +59,9 @@
                 // 右滑
                 if (distanceX > 100) {
                     this.showMenu = true
-                    return
                 }
-                //  左滑
-                if (distanceX < -100) {
-                }
+                //  左滑 distanceX < -100
+
             }
         }
     }
