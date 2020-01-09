@@ -13,6 +13,8 @@ import Add from '../views/home/friend/add'
 import SendVerify from '../views/home/friend/sendVerify'
 import NewFriend from '../views/home/friend/newFriend'
 import ChatRoom from '../views/home/chat/chatroom'
+import FriendDynamic from '../views/home/dynamic/friendDynamic'
+
 import userHome from '../views/home/other/userHome'
 import editData from '../views/home/other/editData'
 import Office from '../views/home/other/office'
@@ -76,6 +78,10 @@ const routes = [
         path: '/home/chatroom',
         name: '聊天室',
         component: ChatRoom
+    }, {
+        path: '/home/friend_dynamic',
+        name: '好友动态',
+        component: FriendDynamic
     }
 ]
 

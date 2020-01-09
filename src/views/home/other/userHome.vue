@@ -1,10 +1,8 @@
 <template>
     <div class="user_home">
-        <div class="header">
-            <span class="icon icon-left" @click="$router.goBack()"></span>
-            <div class="name" :style="{opacity:headerOpacity}">个人主页</div>
-            <div class="right">设置</div>
-        </div>
+        <app-header name="个人主页" :backgroundOpacity="headerOpacity" back>
+            <div class="setup">设置</div>
+        </app-header>
         <input v-show="false" type="file" accept="image/*" :multiple="false" ref="inputFile" @change="updateHomeBG">
         <img class="home_bg" :src="homeBgUrl" alt="" @click="openFileWindow">
         <div class="info">
@@ -53,7 +51,7 @@
         data () {
             return {
                 friendInfo: {},
-                headerOpacity: window.scrollY < 200 ? '0' : '1'
+                headerOpacity: window.scrollY < 200 ? 0 : 1
             }
         },
         computed: {
@@ -96,9 +94,10 @@
         },
         created () {
             this.getUserInfo()
-            window.addEventListener('scroll', () => {
-                this.headerOpacity = window.scrollY < 200 ? '0' : '1'
-            })
+            window.addEventListener('scroll', this.opacityChange)
+        },
+        beforeDestroy () {
+            window.removeEventListener('scroll', this.opacityChange)
         },
         methods: {
             async getUserInfo () {
@@ -139,6 +138,9 @@
                     data: form
                 })
                 this.friendInfo.home_bg = res.data.result.home_bg
+            },
+            opacityChange () {
+                this.headerOpacity = window.scrollY < 200 ? 0 : 1
             }
         }
     }
@@ -149,40 +151,9 @@
         background-color: #fff
         min-height 100vh
 
-        .header {
-            position fixed
-            width 100vw
-            top 0
+        .setup {
             color #fff
-
-            .name {
-                text-align center
-                background: linear-gradient(-45deg, #00a8ff, #00d9ff);
-                padding 10px
-                font-size 16px
-                line-height 30px
-                transition opacity .4s
-            }
-
-            .icon-left,
-            .right {
-                display flex
-                align-items center
-                height 30px
-                position: absolute;
-                top 10px
-                z-index 98
-
-                &.icon-left {
-                    left 10px
-                    font-size 24px
-                }
-
-                &.right {
-                    right 10px
-                    font-size 16px
-                }
-            }
+            font-size 16px
         }
 
         .home_bg {
