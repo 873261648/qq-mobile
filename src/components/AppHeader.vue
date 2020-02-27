@@ -28,7 +28,7 @@
             },
             backgroundOpacity: {
                 type: Number,
-                default: false
+                default: 1
             }
         },
         computed: {

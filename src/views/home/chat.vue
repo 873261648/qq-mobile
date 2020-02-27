@@ -164,6 +164,8 @@
                 align-items flex-end
 
                 .time {
+                    text-align right
+                    width 80px
                     display block
                     color #878a99
                 }
