@@ -3,7 +3,7 @@
         <app-header name="个人主页" :backgroundOpacity="headerOpacity" back>
             <div class="setup">设置</div>
         </app-header>
-        <img class="home_bg" :src="homeBgUrl" alt="">
+        <img class="home_bg" :src="homeBgUrl" alt="img">
     </div>
 </template>
 
