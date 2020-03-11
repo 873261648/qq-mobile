@@ -4,6 +4,9 @@
             <div class="setup">设置</div>
         </app-header>
         <img class="home_bg" :src="homeBgUrl" alt="img">
+        <div class="avatar">
+            <img :src="userInfo.avatar" alt="">
+        </div>
     </div>
 </template>
 
@@ -24,6 +27,7 @@
         created () {
             this.getUserInfo()
             window.addEventListener('scroll', this.opacityChange)
+            console.log(this.homeBg)
         },
         beforeDestroy () {
             window.removeEventListener('scroll', this.opacityChange)
@@ -34,7 +38,7 @@
             },
             async getUserInfo () {
                 let res = await this.$axios.get(`/api/user/info`)
-                this.friendInfo = res.data.result
+                this.userInfo = res.data.result
             },
         }
     }
@@ -45,9 +49,22 @@
         font-size 16px
         color #fff
     }
-    .home_bg{
+
+    .home_bg {
         width 100%
         height 75vw
         object-fit cover
+    }
+
+    .avatar {
+        margin-top -104px
+        padding 20px
+        img {
+            width 60px
+            height 60px
+            border-radius 50%
+            border 2px solid #fff
+            object-fit cover
+        }
     }
 </style>
